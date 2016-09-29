@@ -12,10 +12,15 @@ macx {
   PKG_CONFIG=pkg-config
 }
 
-INCLUDEPATH += $${QINC}/Libs
-LIB_P=$${QINC}/Libs $${QINC}/contrib $${UKKO}/software $${UKKO}/software/contrib $${AVPGH}/Murideo
+defined (VERSION) {
+  QMAKE_CFLAGS += -DSW_VERSION=\\\"r$$VERSION\\\"
+  QMAKE_CXXFLAGS += -DSW_VERSION=\\\"r$$VERSION\\\"
+}
 
-PRISMA_SDK=$${QINC}/Libs/prisma-sdk
+INCLUDEPATH += $${QINC}/software/Libs
+LIB_P=$${QINC}/software/Libs $${QINC}/contrib $${UKKO}/software $${UKKO}/software/contrib $${AVPGH}/Murideo
+
+PRISMA_SDK=$${QINC}/software/Libs/prisma-sdk
 libPRISMA_SDK=$${PRISMA_SDK}/obj.$${BUILD_TARGET}/libprisma.a
 
 libSixGIo=$(HOME)/work/QInc/Murideo/libSixGIo/obj.$${BUILD_TARGET}/libSixGIo.a
@@ -46,11 +51,11 @@ for(sd, LIB_P) {
 }
 
 macx {
-  libColorAnalyzer_extra+=-F$${QINC}/Libs/libColorAnalyzer/Frameworks -framework SipFrame -framework i1d3SDK
+  libColorAnalyzer_extra+=-F$${QINC}/software/Libs/libColorAnalyzer/Frameworks -framework SipFrame -framework i1d3SDK
 }
 win32 {
-  libColorAnalyzer_extra+=$${QINC}/Libs/libColorAnalyzer/XRite/Win32/i386/SipCal.lib
-  libColorAnalyzer_extra+=$${QINC}/Libs/libColorAnalyzer/XRite/Win32/i386/i1d3SDK.lib
+  libColorAnalyzer_extra+=$${QINC}/software/Libs/libColorAnalyzer/XRite/Win32/i386/SipCal.lib
+  libColorAnalyzer_extra+=$${QINC}/software/Libs/libColorAnalyzer/XRite/Win32/i386/i1d3SDK.lib
 }
 
 for(l, QI_LIBS) {

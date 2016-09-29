@@ -9,8 +9,8 @@ win32 {
   CONFIG += release
   PKG_CONFIG=i686-w64-mingw32.static-pkg-config
 
-  libColorAnalyzer_extra+=$${QINC}/Libs/libColorAnalyzer/XRite/Win32/i386/SipCal.lib
-  libColorAnalyzer_extra+=$${QINC}/Libs/libColorAnalyzer/XRite/Win32/i386/i1d3SDK.lib
+  libColorAnalyzer_extra+=$${QINC}/software/Libs/libColorAnalyzer/XRite/Win32/i386/SipCal.lib
+  libColorAnalyzer_extra+=$${QINC}/software/Libs/libColorAnalyzer/XRite/Win32/i386/i1d3SDK.lib
 }
 
 macx {
@@ -18,12 +18,12 @@ macx {
   QMAKE_MACOSX_DEPLOYMENT_TARGET=10.7
   PKG_CONFIG=pkg-config
 
-  libColorAnalyzer_extra+=-F$${QINC}/Libs/libColorAnalyzer/Frameworks -framework SipFrame -framework i1d3SDK
+  libColorAnalyzer_extra+=-F$${QINC}/software/Libs/libColorAnalyzer/Frameworks -framework SipFrame -framework i1d3SDK
 }
 
 INCLUDEPATH+=$${OEM}/QInc/include $${LIB_P}
 
-!defined (VERSION) {
+defined (VERSION) {
   QMAKE_CFLAGS += -DSW_VERSION=\\\"r$$VERSION\\\"
   QMAKE_CXXFLAGS += -DSW_VERSION=\\\"r$$VERSION\\\"
 }

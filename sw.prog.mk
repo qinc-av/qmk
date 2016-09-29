@@ -20,7 +20,7 @@ OBJS=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
 include ${QMK}/arch.mk
 
 #INCLUDES+=${UKKO}/software/contrib ${UKKO}/software ${UKKO}/software/Prisma
-INCLUDES+=${QINC}/Libs ${CONTRIB} ${UKKO}/software ${AVPGH}/Murideo ${SRCDIR}/..
+INCLUDES+=${QINC}/software/Libs ${CONTRIB} ${UKKO}/software ${AVPGH}/Murideo ${SRCDIR}/..
 
 INCLUDES+=${INCLUDES-${BUILD_TARGET}}
 DEFINES+=${DEFINES-${BUILD_TARGET}}
@@ -40,8 +40,8 @@ define printlibs
   $(foreach l,$(patsubst lib%,%,$(notdir $(wildcard ${1}/lib*))),$(info lib_${l} :: ${lib_${l}}))
 endef
 
-$(foreach ld,${QINC}/Libs ${QINC}/contrib ${UKKO}/software ${UKKO}/software/contrib ${AVPGH}/Murideo, $(call findlibs,${ld}))
-#$(foreach ld,${QINC}/Libs ${QINC}/contrib ${UKKO}/software ${AVPGH}, $(call printlibs,${ld}))
+$(foreach ld,${QINC}/software/Libs ${QINC}/contrib ${UKKO}/software ${UKKO}/software/contrib ${AVPGH}/Murideo, $(call findlibs,${ld}))
+#$(foreach ld,${QINC}/software/Libs ${QINC}/contrib ${UKKO}/software ${AVPGH}, $(call printlibs,${ld}))
 
 #  
 # # contrib libs
@@ -55,9 +55,9 @@ lib_httpclient-Mingw=-lws2_32
 lib_curlpp-Darwin=${lib_curl}
 lib_curlpp-Mingw=${lib_curl}
 
-lib_ColorAnalyzer-Darwin=-F ${QINC}/Libs/libColorAnalyzer/Frameworks -framework SipFrame -framework i1d3SDK
-lib_ColorAnalyzer-Mingw =${QINC}/Libs/libColorAnalyzer/XRite/Win32/i386/SipCal.lib
-lib_ColorAnalyzer-Mingw+=${QINC}/Libs/libColorAnalyzer/XRite/Win32/i386/i1d3SDK.lib
+lib_ColorAnalyzer-Darwin=-F ${QINC}/software/Libs/libColorAnalyzer/Frameworks -framework SipFrame -framework i1d3SDK
+lib_ColorAnalyzer-Mingw =${QINC}/software/Libs/libColorAnalyzer/XRite/Win32/i386/SipCal.lib
+lib_ColorAnalyzer-Mingw+=${QINC}/software/Libs/libColorAnalyzer/XRite/Win32/i386/i1d3SDK.lib
 
 #
 # Other pre-installed libs
@@ -75,7 +75,7 @@ LDFLAGS+=${_LIBS} ${LIBS-${BUILD_TARGET}} ${LDFLAGS-${BUILD_TARGET}}
 
 LDFLAGS+=${LDFLAGS-${BUILD_TARGET}}
 
-lib_PRISMA=${QINC}/Libs/prisma-sdk/obj.${BUILD_TARGET}/libprisma.a
+lib_PRISMA=${QINC}/software/Libs/prisma-sdk/obj.${BUILD_TARGET}/libprisma.a
 
 all: ${PROG}${EXE}
 
