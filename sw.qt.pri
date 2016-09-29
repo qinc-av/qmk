@@ -13,7 +13,7 @@ macx {
 }
 
 INCLUDEPATH += $${QINC}/Libs
-LIB_P=$${QINC}/Libs $${QINC}/contrib $${UKKO}/software $${UKKO}/software/contrib $${AVPGH}
+LIB_P=$${QINC}/Libs $${QINC}/contrib $${UKKO}/software $${UKKO}/software/contrib $${AVPGH}/Murideo
 
 PRISMA_SDK=$${QINC}/Libs/prisma-sdk
 libPRISMA_SDK=$${PRISMA_SDK}/obj.$${BUILD_TARGET}/libprisma.a

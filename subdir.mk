@@ -20,3 +20,6 @@ _SUBDIRS=${SUBDIRS} ${SUBDIRS-${BUILD_HOST}} ${SUBDIRS-${BUILD_TARGET}}
 
 all clean install:
 	$(foreach d, ${_SUBDIRS}, echo Building ${d} && $(MAKE) -C ${d} -I ${QMK}/mk QMK=${_QMK} $@ &&) echo ok
+
+export:
+	$(foreach d, ${EXPORTS-${OEM}}, echo Exporting ${d} for ${OEM} && $(MAKE) -C ${d} -I ${QMK}/mk QMK=${_QMK} DESTDIR=${DESTDIR-${OEM}} install &&) echo ok

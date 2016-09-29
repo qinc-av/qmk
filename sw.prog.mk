@@ -20,7 +20,7 @@ OBJS=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
 include ${QMK}/arch.mk
 
 #INCLUDES+=${UKKO}/software/contrib ${UKKO}/software ${UKKO}/software/Prisma
-INCLUDES+=${QINC}/Libs ${CONTRIB} ${UKKO}/software ${SRCDIR}/..
+INCLUDES+=${QINC}/Libs ${CONTRIB} ${UKKO}/software ${AVPGH}/Murideo ${SRCDIR}/..
 
 INCLUDES+=${INCLUDES-${BUILD_TARGET}}
 DEFINES+=${DEFINES-${BUILD_TARGET}}
@@ -40,7 +40,7 @@ define printlibs
   $(foreach l,$(patsubst lib%,%,$(notdir $(wildcard ${1}/lib*))),$(info lib_${l} :: ${lib_${l}}))
 endef
 
-$(foreach ld,${QINC}/Libs ${QINC}/contrib ${UKKO}/software ${UKKO}/software/contrib ${AVPGH}, $(call findlibs,${ld}))
+$(foreach ld,${QINC}/Libs ${QINC}/contrib ${UKKO}/software ${UKKO}/software/contrib ${AVPGH}/Murideo, $(call findlibs,${ld}))
 #$(foreach ld,${QINC}/Libs ${QINC}/contrib ${UKKO}/software ${AVPGH}, $(call printlibs,${ld}))
 
 #  
@@ -76,7 +76,6 @@ LDFLAGS+=${_LIBS} ${LIBS-${BUILD_TARGET}} ${LDFLAGS-${BUILD_TARGET}}
 LDFLAGS+=${LDFLAGS-${BUILD_TARGET}}
 
 lib_PRISMA=${QINC}/Libs/prisma-sdk/obj.${BUILD_TARGET}/libprisma.a
-lib_SIXGIO=${MURIDEO/libSixGIo/obj.${BUILD_TARGET}/libSixGIo.a
 
 all: ${PROG}${EXE}
 

@@ -23,7 +23,7 @@ OBJS=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
 
 include ${QMK}/arch.mk
 
-INCLUDES+=${QINC}/Libs ${UKKO}/software ${CONTRIB}
+INCLUDES+=${QINC}/Libs ${UKKO}/software ${CONTRIB} ${AVPGH}/Murideo
 
 INCLUDES+=${INCLUDES-${BUILD_TARGET}}
 DEFINES+=${DEFINES-${BUILD_TARGET}}
@@ -36,7 +36,6 @@ CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 
 PNG_INC = $(shell pkg-config --cflags libpng)
 FT_INC = $(shell pkg-config --cflags freetype2)
-CURLPP_INC=${CONTRIB}/libcurlpp/include
 
 #JPEG_INC = $(shell pkg-config --cflags freetype2)
 USB_INC = $(shell ${PKG_CONFIG} --cflags libusb-1.0)

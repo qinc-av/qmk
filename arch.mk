@@ -18,14 +18,13 @@ OPTDBG?=-g3 -O0
 
 UKKO?=${HOME}/work/QInc/Ukko
 QINC?=${HOME}/work/QInc/Projects
-AVPGH?=${HOME}/work/QInc/Murideo
+AVPGH?=${HOME}/work/QInc/AVProGH
+CONTRIB=${QINC}/contrib
 
 ifeq (${BUILD_HOST},Darwin)
 ############################################################
 ## Darwin Host
 ##
-
-MURIDEO_SW=${HOME}/work/QInc/Murideo
 
 ifeq (${BUILD_TARGET},Darwin)
 ########################################
@@ -92,3 +91,6 @@ PKG_CONFIG=${CROSS}pkg-config
 
 DEFINES+=HOST_SOFTWARE
 
+##
+## Defines for OEM stuffs
+DESTDIR-AVPGH=${AVPGH}/QInc
