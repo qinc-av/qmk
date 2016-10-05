@@ -16,6 +16,7 @@ VPATH+=${SRCDIR}
 SRCS+=${SRCS-${BUILD_TARGET}}
 
 OBJS=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
+$(info OBJS= ${OBJS})
 
 include ${QMK}/arch.mk
 
@@ -80,6 +81,7 @@ lib_PRISMA=${QINC}/software/Libs/prisma-sdk/obj.${BUILD_TARGET}/libprisma.a
 all: ${PROG}${EXE}
 
 ${PROG}${EXE}: ${OBJS} ${_LIBS}
+	echo ${OBJS}
 	${CXX} -o $@ ${OBJS} ${LDFLAGS} ${LDADD} ${LDADD-${BUILD_TARGET}}
 
 clean:
