@@ -14,7 +14,11 @@ endif
 
 CXX_STD?=c++11
 
+ifdef RELEASE
+OPTDBG?=-O3
+else
 OPTDBG?=-g3 -O0
+endif
 
 UKKO?=${HOME}/work/QInc/Ukko
 QINC?=${HOME}/work/QInc/Projects
