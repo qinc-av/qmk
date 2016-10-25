@@ -44,7 +44,10 @@ endef
 XLIB_PATH=${QINC}/software/Libs ${QINC}/contrib ${UKKO}/software ${UKKO}/software/contrib ${AVPGH}/Murideo
 
 $(foreach ld,${XLIB_PATH}, $(call findlibs,${ld}))
-##$(foreach ld,${XLIB_PATH}, $(call printlibs,${ld}))
+
+ifeq (${QMK_DEBUG},debug)
+$(foreach ld,${XLIB_PATH}, $(call printlibs,${ld}))
+endif
 
 #  
 # # contrib libs
