@@ -30,10 +30,12 @@ else
 BUILD_HOST=Darwin
 endif
 
+_QMK=$(abspath ${QMK})
+
 _BUILD_TARGETS=${BUILD_TARGETS-${BUILD_HOST}}
 
 BUILD_TARGETS?=$(patsubst obj.%/.,%,$(foreach t, ${_BUILD_TARGETS}, $(wildcard obj.${t}/.)))
 
 all clean test cleantest release cleanrelease install:
-	$(foreach t, ${BUILD_TARGETS}, ${MAKE} -f ${CURDIR}/${MK} -I $(abspath ${QMK}) -C obj.${t} QMK=${QMK} QINC=$(dir ${QMK}) BUILD_TARGET=${t} BUILD_HOST=${BUILD_HOST} DESTDIR=${DESTDIR} $@ && ) echo Done
+	$(foreach t, ${BUILD_TARGETS}, ${MAKE} -f ${CURDIR}/${MK} -I${_QMK} -C obj.${t} QMK=${_QMK} QINC=$(dir ${_QMK}) BUILD_TARGET=${t} BUILD_HOST=${BUILD_HOST} DESTDIR=${DESTDIR} $@ && ) echo Done
 

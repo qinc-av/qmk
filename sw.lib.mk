@@ -43,6 +43,7 @@ USB_INC = $(shell ${PKG_CONFIG} --cflags libusb-1.0)
 all: lib${LIB}.a
 
 lib${LIB}.a: ${OBJS}
+	rm -f lib${LIB}.a
 	${AR} rv lib${LIB}.a ${OBJS}
 	${RANLIB} lib${LIB}.a
 

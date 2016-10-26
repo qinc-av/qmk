@@ -87,7 +87,7 @@ all: ${PROG}${EXE}
 
 ${PROG}${EXE}: ${OBJS} ${_LIBS}
 	echo ${OBJS}
-	${CXX} -o $@ ${OBJS} ${LDFLAGS} ${LDADD} ${LDADD-${BUILD_TARGET}}
+	${CXX} -o $@ ${OBJS} ${LDFLAGS} ${LDADD-${BUILD_TARGET}} ${LDADD}
 
 clean:
 	${RM} ${PROG}${EXE} ${OBJS} ${CLEANFILES}
