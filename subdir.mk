@@ -1,5 +1,5 @@
 ##################################################
-## file: /Users/elhernes/work/QInc/Ukko/software/mk/subdir.mk
+## file: //QInc/Projects/qmk/subdir.mk
 ##
 ## (C) Copyright Eric L. Hernes -- Wednesday, January 1, 2014
 ##

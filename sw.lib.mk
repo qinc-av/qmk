@@ -1,5 +1,5 @@
 ##################################################
-## file: /Users/elhernes/work/QInc/Ukko/software/mk/sw.lib.mk
+## file: //QInc/Projects/qmk/sw.lib.mk
 ##
 ## (C) Copyright Eric L. Hernes -- Wednesday, January 1, 2014
 ##
@@ -51,9 +51,9 @@ clean:
 	${RM} lib${LIB}.a ${OBJS} ${CLEANFILES}
 
 install: lib${LIB}.a
-	@test -d ${DESTDIR}/include/lib${LIB} || mkdir -p ${DESTDIR}/include/lib${LIB}
+	@for d in $(patsubst %/,%,$(sort $(dir ${PUBLIC_HEADER}))); do test -d ${DESTDIR}/include/lib${LIB}/$${d} || mkdir -p ${DESTDIR}/include/lib${LIB}/$${d}; done
 	@echo install public header: ${PUBLIC_HEADER} ${DESTDIR}/include/lib${LIB}
-	@cp $(patsubst %,${SRCDIR}/%,${PUBLIC_HEADER}) ${DESTDIR}/include/lib${LIB}
+	@s=${SRCDIR}; for h in ${PUBLIC_HEADER}; do cp $${s}/$${h} ${DESTDIR}/include/lib${LIB}/$${h}; done
 	@test -d ${DESTDIR}/lib/obj.${BUILD_TARGET} || mkdir -p ${DESTDIR}/lib/obj.${BUILD_TARGET}
 	@echo install library: ${DESTDIR}/lib/obj.${BUILD_TARGET}/lib${LIB}.a
 	@cp lib${LIB}.a ${DESTDIR}/lib/obj.${BUILD_TARGET}

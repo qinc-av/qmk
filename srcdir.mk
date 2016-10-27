@@ -1,5 +1,5 @@
 ##################################################
-## file: /Users/elhernes/work/QInc/Ukko/software/mk/srcdir.mk
+## file: //QInc/Projects/qmk/srcdir.mk
 ##
 ## (C) Copyright Eric L. Hernes -- Wednesday, January 1, 2014
 ##

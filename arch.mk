@@ -1,5 +1,5 @@
 ##################################################
-## file: /Users/elhernes/work/QInc/Ukko/software/arch.mk
+## file: //QInc/Projects/qmk/arch.mk
 ##
 ## (C) Copyright Eric L. Hernes -- Wednesday, January 1, 2014
 ##

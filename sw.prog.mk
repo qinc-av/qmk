@@ -1,5 +1,5 @@
 ##################################################
-## file: /Users/elhernes/work/QInc/Ukko/mk/sw.prog.mk
+## file: //QInc/Projects/qmk/sw.prog.mk
 ##
 ## (C) Copyright Eric L. Hernes -- Wednesday, January 1, 2014
 ##

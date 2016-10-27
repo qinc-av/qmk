@@ -1,5 +1,5 @@
 ##################################################
-## file: /Users/Eric/Documents/QInc/Ukko/mk/iar.proj.mk
+## file: //QInc/Projects/qmk/iar.proj.mk
 ##
 ## (C) Copyright Eric L. Hernes -- Monday, September 15, 2014
 ##
