@@ -41,7 +41,7 @@ define printlibs
   $(foreach l,$(patsubst lib%,%,$(notdir $(wildcard ${1}/lib*))),$(info lib_${l} :: ${lib_${l}}))
 endef
 
-XLIB_PATH=${QINC}/software/Libs ${QINC}/contrib ${UKKO}/software ${UKKO}/software/contrib ${AVPGH}/Murideo
+XLIB_PATH+=${QINC}/software/Libs ${QINC}/contrib ${UKKO}/software ${UKKO}/software/contrib ${AVPGH}/Murideo
 
 $(foreach ld,${XLIB_PATH}, $(call findlibs,${ld}))
 
