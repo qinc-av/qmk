@@ -20,8 +20,8 @@ else
 OPTDBG?=-g3 -O0
 endif
 
-UKKO?=${HOME}/work/QInc/Ukko
 QINC?=${HOME}/work/QInc/Projects
+UKKO?=${HOME}/work/QInc/Projects/Ukko
 AVPGH?=${HOME}/work/QInc/AVProGH
 CONTRIB=${QINC}/contrib
 
