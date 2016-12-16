@@ -37,7 +37,7 @@ ifeq (${BUILD_TARGET},Darwin)
 CROSS=
 EXE=
 ARCH-Darwin?=-arch i386 -arch x86_64
-ARCH_FLAGS?=-mmacosx-version-min=10.7 
+ARCH_FLAGS?=-mmacosx-version-min=10.10
 #QMAKE=/opt/local/libexec/qt4/bin/qmake
 QMAKE=/opt/local/libexec/qt5/bin/qmake
 QMAKE_SPEC=-spec macx-clang-32

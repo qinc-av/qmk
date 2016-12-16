@@ -37,7 +37,7 @@ CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 PNG_INC = $(shell pkg-config --cflags libpng)
 FT_INC = $(shell pkg-config --cflags freetype2)
 
-#JPEG_INC = $(shell pkg-config --cflags freetype2)
+JPEG_INC ?= -I/opt/local/include #$(shell pkg-config --cflags freetype2)
 USB_INC = $(shell ${PKG_CONFIG} --cflags libusb-1.0)
 
 all: lib${LIB}.a
