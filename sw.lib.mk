@@ -21,6 +21,14 @@ SRCS+=${SRCS-${BUILD_TARGET}}
 
 OBJS=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
 
+##
+## would be nice but doesn't work
+#define obj_rule
+#$(info $(patsubst %,%.o,$(basename $(notdir ${1}))): ${1})
+#$(patsubst %,%.o,$(basename $(notdir ${1}))): ${1}
+#endef
+#$(foreach s,${SRCS},$(eval $(call obj_rule, ${SRCDIR}${s})))
+
 include ${QMK}/arch.mk
 
 INCLUDES+=${QINC}/software/Libs ${UKKO}/software ${CONTRIB} ${AVPGH}/Murideo
