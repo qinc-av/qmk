@@ -34,7 +34,7 @@ CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 
 # find all the software libraries:
 define findlibs
-  $(foreach l,$(patsubst lib%,%,$(notdir $(wildcard ${1}/lib*))),$(eval lib_${l}=${1}/lib${l}/obj.${BUILD_TARGET}/lib${l}.a))
+  $(foreach l,$(patsubst lib%,%,$(notdir $(wildcard ${1}/lib*))),$(eval lib_${l}?=${1}/lib${l}/obj.${BUILD_TARGET}/lib${l}.a))
 endef
 
 define printlibs
