@@ -92,6 +92,7 @@ AR=${CROSS}ar
 RANLIB=${CROSS}ranlib
 AS=${CROSS}as
 PKG_CONFIG=${CROSS}pkg-config
+STRIP=${CROSS}strip
 
 DEFINES+=HOST_SOFTWARE
 
