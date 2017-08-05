@@ -20,15 +20,14 @@ else
 OPTDBG?=-g3 -O0
 endif
 
-QINC?=${HOME}/work/QInc/Projects
-UKKO?=${HOME}/work/QInc/Projects/Ukko
-AVPGH?=${HOME}/work/QInc/AVProGH
-CONTRIB=${QINC}/contrib
-
 ifeq (${BUILD_HOST},Darwin)
 ############################################################
 ## Darwin Host
 ##
+QINC?=${HOME}/work/QInc/Projects
+UKKO?=${HOME}/work/QInc/Projects/Ukko
+AVPGH?=${HOME}/work/QInc/AVProGH
+CONTRIB=${QINC}/contrib
 
 ifeq (${BUILD_TARGET},Darwin)
 ########################################
@@ -73,6 +72,11 @@ endif
 RM=rm -f
 
 else ifeq (${BUILD_HOST},Windows)
+QINC?=${USERPROFILE}/Documents/QInc/Projects/QCore
+UKKO?=${USERPROFILE}/Documents/QInc/Projects/Ukko
+AVPGH?=${USERPROFILE}/Documents/QInc/AVProGH
+CONTRIB=${QINC}/contrib
+
 ifdef WIN_XP
 ARCH-Mingw?=-m32 -DWIN_XP
 endif
