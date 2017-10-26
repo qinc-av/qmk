@@ -31,7 +31,7 @@ OBJS=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
 
 include ${QMK}/arch.mk
 
-INCLUDES+=${QINC}/software/Libs ${UKKO}/software ${CONTRIB} ${AVPGH}/software
+INCLUDES+=${QINC}/software/libs ${UKKO}/software ${CONTRIB} ${AVPGH}/software
 
 INCLUDES+=${INCLUDES-${BUILD_TARGET}}
 DEFINES+=${DEFINES-${BUILD_TARGET}}

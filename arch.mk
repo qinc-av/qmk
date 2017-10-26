@@ -24,7 +24,7 @@ ifeq (${BUILD_HOST},Darwin)
 ############################################################
 ## Darwin Host
 ##
-QINC?=${HOME}/work/QInc/Projects
+QINC?=${HOME}/work/QInc/Projects/QCore
 UKKO?=${HOME}/work/QInc/Projects/Ukko
 AVPGH?=${HOME}/work/QInc/AVProGH
 CONTRIB=${QINC}/contrib
