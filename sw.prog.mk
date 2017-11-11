@@ -10,27 +10,8 @@ ifeq (${PROG},)
 PROG=$(lastword $(subst /, ,$(dir ${CURDIR})))
 endif
 
-SRCDIR=$(dir ${CURDIR})
-VPATH+=${SRCDIR}
-
-SRCS+=${SRCS-${BUILD_TARGET}}
-
-OBJS=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
-$(info OBJS= ${OBJS})
-
 include ${QMK}/arch.mk
-
-#INCLUDES+=${UKKO}/software/contrib ${UKKO}/software ${UKKO}/software/Prisma
-INCLUDES+=${QINC}/software/Libs ${CONTRIB} ${UKKO}/software ${AVPGH}/Murideo ${SRCDIR}/..
-
-INCLUDES+=${INCLUDES-${BUILD_TARGET}}
-DEFINES+=${DEFINES-${BUILD_TARGET}}
-
-_Cxx_FLAGS=$(patsubst %,-D%,${DEFINES}) $(patsubst %,-I%,${INCLUDES})
-CFLAGS+=${_Cxx_FLAGS} ${OPTDBG}
-CFLAGS+=${CFLAGS-${BUILD_TARGET}}
-CXXFLAGS+=-std=${CXX_STD} ${_Cxx_FLAGS} ${OPTDBG}
-CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
+include ${QMK}/sw.obj.mk
 
 # find all the software libraries:
 define findlibs
@@ -85,7 +66,7 @@ lib_PRISMA=${QINC}/software/Libs/prisma-sdk/obj.${BUILD_TARGET}/libprisma.a
 
 all: ${PROG}${EXE}
 
-${PROG}${EXE}: ${OBJS} ${_LIBS}
+${PROG}${EXE}: ${BUILD_DEPENDS} ${OBJS} ${_LIBS}
 	echo ${OBJS}
 	${CXX} -o $@ ${OBJS} ${LDFLAGS} ${LDADD-${BUILD_TARGET}} ${LDADD}
 

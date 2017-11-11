@@ -12,7 +12,7 @@ else
 BUILD_HOST=Darwin
 endif
 
-CXX_STD?=c++11
+CXX_STD?=-std=c++11
 
 ifdef RELEASE
 OPTDBG?=-O3

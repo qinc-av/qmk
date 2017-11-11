@@ -18,16 +18,20 @@ cleantest: MK=${TEST}.mk
 release: MK=${RELEASE}.mk
 cleanrelease: MK=${RELEASE}.mk
 
-MK?=$(notdir ${CURDIR}).mk
+MK?=${CURDIR}/$(notdir ${CURDIR}).mk
+PRO?=$(notdir ${CURDIR}).pro
 
 objects := 
 
+#
+# this sets things up so you can use:
+# include ${xxxx.mk}
 $(foreach t, $(wildcard ${QMK}/*.mk), $(eval $(notdir ${t})=${t}))
 
 ifneq (${ProgramFiles},)
-BUILD_HOST=Windows
+BUILD_HOST?=Windows
 else
-BUILD_HOST=Darwin
+BUILD_HOST?=$(shell uname)
 endif
 
 _QMK=$(abspath ${QMK})
@@ -36,6 +40,18 @@ _BUILD_TARGETS=${BUILD_TARGETS-${BUILD_HOST}}
 
 BUILD_TARGETS?=$(patsubst obj.%/.,%,$(foreach t, ${_BUILD_TARGETS}, $(wildcard obj.${t}/.)))
 
-all clean test cleantest release cleanrelease install:
-	$(foreach t, ${BUILD_TARGETS}, ${MAKE} -f ${CURDIR}/${MK} -I${_QMK} -C obj.${t} QMK=${_QMK} QINC=$(dir ${_QMK}) BUILD_TARGET=${t} BUILD_HOST=${BUILD_HOST} DESTDIR=${DESTDIR} $@ && ) echo Done
+ifneq ($(wildcard ${PRO}),)
+$(info using qmake pro ${PRO})
+MK=${sw.qt.mk} PRO=${PRO}
+else ifneq ($(wildcard ${MK}),)
+$(info using gnumake mk ${MK})
+endif
 
+ifneq (DESTDIR,)
+ _DESTDIR=${DESTDIR}
+endif
+
+all clean test cleantest release cleanrelease install qmake:
+	@echo building for ${BUILD_TARGETS}
+	@$(foreach t, ${BUILD_TARGETS}, \
+		${_BUILD_ENV} echo $@ Begin; echo Entering directory \'obj.${t}\' && ${MAKE} -C obj.${t} -f ${MK} -I${_QMK} QMK=${_QMK} QINC=$(dir ${_QMK}) BUILD_TARGET=${t} BUILD_HOST=${BUILD_HOST} ${_DESTDIR_VAR} $@ && echo Leaving directory \'obj.${t}\' && ) echo $@ Done
