@@ -13,7 +13,14 @@ SRCDIR=$(dir ${CURDIR})
 # Add any platform specific sources
 SRCS+=${SRCS-${BUILD_TARGET}} ${SRCS-${BASE_PLATFORM}}
 
-OBJS=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
+ifneq (${PROTO},)
+PROTO_GENSRC=$(patsubst %,%.pb.c,${PROTO})
+PROTO_GENHDR=$(patsubst %,%.pb.h,${PROTO})
+CLEANFILES+=${PROTO_GENSRC} ${PROTO_GENHDR} $(patsubst %,%.pb,${PROTO})
+endif
+
+OBJS=$(patsubst %,%.pb.o,${PROTO})
+OBJS+=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
 ifneq (${QMK_DEBUG},)
 $(info SRCS are ${SRCS})
 $(info OBJS are ${OBJS})
@@ -37,6 +44,13 @@ CFLAGS+=${OPTDBG} ${_CPP_FLAGS}
 CFLAGS+=${CFLAGS-${BUILD_TARGET}}
 CXXFLAGS+=${CXX_STD} ${OPTDBG} ${_CPP_FLAGS} 
 CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
+
+%.pb : %.proto
+	${PROTOC} ${PROTO_FLAGS} --proto_path ${SRCDIR} -o $@ $(notdir $<)
+
+%.pb.h %.pb.c : %.pb
+	${NANOPB_GENERATOR} ${NANOPB_FLAGS} $<
+
 
 #
 # Local Variables:
