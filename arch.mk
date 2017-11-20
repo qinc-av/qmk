@@ -29,17 +29,23 @@ UKKO?=${HOME}/work/QInc/Projects/Ukko
 AVPGH?=${HOME}/work/QInc/AVProGH
 CONTRIB=${QINC}/contrib
 
+PROTOC=protoc
+NANOPB_GENERATOR=nanopb_generator
+NANOPB_FLAGS=-L "\#include <libnanopb/%s>"
+
 ifeq (${BUILD_TARGET},Darwin)
 ########################################
 ## Darwin Native
 ##
 CROSS=
 EXE=
-ARCH-Darwin?=-arch i386 -arch x86_64
+#ARCH-Darwin?=-arch i386 -arch x86_64
+ARCH-Darwin?=-arch x86_64
 ARCH_FLAGS?=-mmacosx-version-min=10.10
 #QMAKE=/opt/local/libexec/qt4/bin/qmake
-QMAKE=/opt/local/libexec/qt5/bin/qmake
-QMAKE_SPEC=-spec macx-clang-32
+#QMAKE?=/usr/local/bin/qmake
+QMAKE?=${HOME}/Qt/5.9.1/clang_64/bin/qmake
+#QMAKE_SPEC=-spec macx-clang-32
 
 else ifeq (${BUILD_TARGET},Mingw)
 ########################################

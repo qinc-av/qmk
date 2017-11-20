@@ -12,13 +12,18 @@ BUILD_TARGETS-Windows?=Mingw
 TEST?=test
 RELEASE?=release
 
-test: MK=${TEST}.mk
-cleantest: MK=${TEST}.mk
+test: MK:=${TEST}.mk
+cleantest: MK:=${TEST}.mk
 
-release: MK=${RELEASE}.mk
-cleanrelease: MK=${RELEASE}.mk
+release: MK:=${RELEASE}.mk
+cleanrelease: MK:=${RELEASE}.mk
 
-MK?=${CURDIR}/$(notdir ${CURDIR}).mk
+MK_PATH=${CURDIR}
+
+ifeq (${MK},)
+  MK=$(notdir ${CURDIR}).mk
+endif
+
 PRO?=$(notdir ${CURDIR}).pro
 
 objects := 
@@ -41,10 +46,11 @@ _BUILD_TARGETS=${BUILD_TARGETS-${BUILD_HOST}}
 BUILD_TARGETS?=$(patsubst obj.%/.,%,$(foreach t, ${_BUILD_TARGETS}, $(wildcard obj.${t}/.)))
 
 ifneq ($(wildcard ${PRO}),)
-$(info using qmake pro ${PRO})
-MK=${sw.qt.mk} PRO=${PRO}
+$(info using qmake: ${PRO})
+MK=sw.qt.mk PRO=${PRO}
+MK_PATH=${_QMK}
 else ifneq ($(wildcard ${MK}),)
-$(info using gnumake mk ${MK})
+$(info using gnumake: ${MK_PATH}/${MK})
 endif
 
 ifneq (DESTDIR,)
@@ -54,4 +60,4 @@ endif
 all clean test cleantest release cleanrelease install qmake:
 	@echo building for ${BUILD_TARGETS}
 	@$(foreach t, ${BUILD_TARGETS}, \
-		${_BUILD_ENV} echo $@ Begin; echo Entering directory \'obj.${t}\' && ${MAKE} -C obj.${t} -f ${MK} -I${_QMK} QMK=${_QMK} QINC=$(dir ${_QMK}) BUILD_TARGET=${t} BUILD_HOST=${BUILD_HOST} ${_DESTDIR_VAR} $@ && echo Leaving directory \'obj.${t}\' && ) echo $@ Done
+		${_BUILD_ENV} echo $@ Begin; echo Entering directory \'obj.${t}\' && ${MAKE} -C obj.${t} -f ${MK_PATH}/${MK} -I${_QMK} QMK=${_QMK} QINC=$(dir ${_QMK}) BUILD_TARGET=${t} BUILD_HOST=${BUILD_HOST} ${_DESTDIR_VAR} $@ && echo Leaving directory \'obj.${t}\' && ) echo $@ Done
