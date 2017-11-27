@@ -59,7 +59,7 @@ lib_usb = $(shell ${PKG_CONFIG} --libs libusb-1.0)
 _LIBS=$(foreach l,${LIBS},${lib_${l}})
 LIBS-${BUILD_TARGET}+=$(foreach l,${LIBS},${lib_${l}-${BUILD_TARGET}})
 
-LDFLAGS+=-std=${CXX_STD} ${_LIBS} ${LIBS-${BUILD_TARGET}} ${LDFLAGS-${BUILD_TARGET}}
+LDFLAGS+=${CXX_STD} ${_LIBS} ${LIBS-${BUILD_TARGET}} ${LDFLAGS-${BUILD_TARGET}}
 
 LDFLAGS+=${LDFLAGS-${BUILD_TARGET}}
 

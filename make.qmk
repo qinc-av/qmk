@@ -1,5 +1,11 @@
 #!/bin/sh
 __shebang_exec_hack=0 exec make -f ${0} ${@}
-mk-template?=srcdir
 QMK?=$(dir $(realpath $(lastword ${MAKEFILE_LIST})))
-include ${QMK}${mk-template}.mk
+ifeq (${mk},)
+  mk=srcdir.mk
+  mk-path=${QMK}
+else
+  mk-path=
+endif
+
+include ${mk-path}${mk}

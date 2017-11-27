@@ -69,6 +69,18 @@ EXE=
 QMAKE=${CROSS}qmake-qt5
 QMAKE_SPEC=
 
+else ifeq (${BUILD_TARGET},Linux-dart)
+########################################
+## Linux-ARM for imx6ul/dart cross on Darwin
+##
+ARCH-Linux-dart=
+CROSS=armv7-qinc-linux-gnueabi-
+EXE=
+QMAKE=${CROSS}qmake-qt5
+QMAKE_SPEC=
+#SYSROOT=${HOME}/work/QInc/Elac/DDP2/sysroots/imx6ul-var-dart
+#ARCH_FLAGS=-nostdinc --sysroot ${SYSROOT} -isystem ${SYSROOT}/usr/include
+
 else
 ########################################
 ## Undefined on Darwin
