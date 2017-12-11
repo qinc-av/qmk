@@ -27,7 +27,7 @@ $(info OBJS are ${OBJS})
 endif
 
 _SRC_DIRS=$(sort $(foreach s,${SRCS},$(dir ${s})))
-VPATH=$(patsubst %,${SRCDIR}/%,${_SRC_DIRS})
+VPATH+=$(patsubst %,${SRCDIR}/%,${_SRC_DIRS})
 
 INCLUDES+=${SRCDIR}/..
 
@@ -51,6 +51,11 @@ CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 %.pb.h %.pb.c : %.pb
 	${NANOPB_GENERATOR} ${NANOPB_FLAGS} $<
 
+%_civet.h : %.api
+	${APIGEN} -i server-civet-h $<
+
+%_api.js: %.api
+	${APIGEN} -i js $<
 
 #
 # Local Variables:

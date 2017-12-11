@@ -26,12 +26,16 @@ ifeq (${BUILD_HOST},Darwin)
 ##
 QINC?=${HOME}/work/QInc/Projects/QCore
 UKKO?=${HOME}/work/QInc/Projects/Ukko
+UKKO_CONTRIB=${UKKO}/software/contrib
+UKKO_FW=${UKKO}/firmware/libs
 AVPGH?=${HOME}/work/QInc/AVProGH
 CONTRIB=${QINC}/contrib
 
 PROTOC=protoc
 NANOPB_GENERATOR=nanopb_generator
 NANOPB_FLAGS=-L "\#include <libnanopb/%s>"
+
+APIGEN=${UKKO}/software/apigen/obj.Darwin/apigen
 
 ifeq (${BUILD_TARGET},Darwin)
 ########################################
@@ -69,12 +73,22 @@ EXE=
 QMAKE=${CROSS}qmake-qt5
 QMAKE_SPEC=
 
+else ifeq (${BUILD_TARGET},Linux-rpi)
+########################################
+## Linux-ARM cross on Darwin
+##
+ARCH-Linux-arm=
+CROSS=armv7-qinc-linux-gnueabi-
+EXE=
+QMAKE=${CROSS}qmake-qt5
+QMAKE_SPEC=
+
 else ifeq (${BUILD_TARGET},Linux-dart)
 ########################################
 ## Linux-ARM for imx6ul/dart cross on Darwin
 ##
 ARCH-Linux-dart=
-CROSS=armv7-qinc-linux-gnueabi-
+CROSS=arm-imx6_dart-linux-gnueabihf-
 EXE=
 QMAKE=${CROSS}qmake-qt5
 QMAKE_SPEC=

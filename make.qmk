@@ -2,10 +2,16 @@
 __shebang_exec_hack=0 exec make -f ${0} ${@}
 QMK?=$(dir $(realpath $(lastword ${MAKEFILE_LIST})))
 ifeq (${mk},)
-  mk=srcdir.mk
-  mk-path=${QMK}
+  ifeq (,$(wildcard Makefile))
+    mk=srcdir.mk
+    mk-path=${QMK}
+  else
+    mk=Makefile 
+  endif
 else
   mk-path=
 endif
+$(info mk is ${mk-path}${mk})
+$(info QMK is ${QMK})
 
 include ${mk-path}${mk}

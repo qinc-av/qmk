@@ -31,7 +31,9 @@ OBJS=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
 
 include ${QMK}/arch.mk
 
+ifeq (${NO_Q_INCLUDES},)
 INCLUDES+=${QINC}/software/libs ${UKKO}/software ${CONTRIB} ${AVPGH}/software
+endif
 
 INCLUDES+=${INCLUDES-${BUILD_TARGET}}
 DEFINES+=${DEFINES-${BUILD_TARGET}}
@@ -40,6 +42,7 @@ include ${QMK}/sw.obj.mk
 
 JPEG_INC ?= -I/opt/local/include #$(shell pkg-config --cflags freetype2)
 USB_INC = $(shell ${PKG_CONFIG} --cflags libusb-1.0)
+FT_INC = $(shell ${PKG_CONFIG} --cflags freetype2)
 
 all: ${BUILD_DEPENDS} lib${LIB}.a
 
