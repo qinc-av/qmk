@@ -1,5 +1,5 @@
 ########################################
-## file: //QInc/Projects/qmk/sw.obj.mk
+## file: //QInc/qmk/sw.obj.mk
 ## born-on: Wednesday, January 1, 2014
 ## creator: Eric L. Hernes
 ##
@@ -29,6 +29,10 @@ endif
 _SRC_DIRS=$(sort $(foreach s,${SRCS},$(dir ${s})))
 VPATH+=$(patsubst %,${SRCDIR}/%,${_SRC_DIRS})
 
+ifeq (${NO_Q_INCLUDES},)
+INCLUDES+=${QINC}/software/libs ${UKKO}/software ${CONTRIB}
+endif
+
 INCLUDES+=${SRCDIR}/..
 
 INCLUDES+=${INCLUDES-${BUILD_TARGET}}
@@ -39,10 +43,16 @@ $(info includes ${INCLUDES})
 $(info VPATH is ${VPATH})
 endif
 
+ifeq (${NO_DEPS},)
+DEPFLAGS?=-MT $@ -MMD -MP -MF $*.Td
+DEPFILES=$(patsubst %,%.Td,$(basename $(notdir ${SRCS})))
+CLEANFILES+=${DEPFILES}
+endif
+
 _CPP_FLAGS=$(patsubst %,-D%,${DEFINES}) $(patsubst %,-I%,${INCLUDES})
-CFLAGS+=${OPTDBG} ${_CPP_FLAGS}
+CFLAGS+=${OPTDBG} ${_CPP_FLAGS} ${DEPFLAGS}
 CFLAGS+=${CFLAGS-${BUILD_TARGET}}
-CXXFLAGS+=${CXX_STD} ${OPTDBG} ${_CPP_FLAGS} 
+CXXFLAGS+=${CXX_STD} ${OPTDBG} ${_CPP_FLAGS} ${DEPFLAGS}
 CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 
 %.pb : %.proto
@@ -56,6 +66,13 @@ CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 
 %_api.js: %.api
 	${APIGEN} -i js $<
+
+%.o : %.cxx
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
+
+ifeq (${NO_DEPS},)
+-include ${DEPFILES}
+endif
 
 #
 # Local Variables:

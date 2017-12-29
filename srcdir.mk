@@ -1,5 +1,5 @@
 ##################################################
-## file: //QInc/Projects/qmk/srcdir.mk
+## file: //QInc/qmk/srcdir.mk
 ##
 ## (C) Copyright Eric L. Hernes -- Wednesday, January 1, 2014
 ##
@@ -11,12 +11,14 @@ BUILD_TARGETS-Windows?=Mingw
 
 TEST?=test
 RELEASE?=release
+DISTRO?=distro
 
 test: MK:=${TEST}.mk
 cleantest: MK:=${TEST}.mk
 
 release: MK:=${RELEASE}.mk
 cleanrelease: MK:=${RELEASE}.mk
+distro: MK:=${DISTRO}.mk
 
 MK_PATH=${CURDIR}
 
@@ -57,7 +59,7 @@ ifneq (DESTDIR,)
  _DESTDIR=${DESTDIR}
 endif
 
-all clean test cleantest release cleanrelease install qmake:
+all clean test cleantest release cleanrelease distro install qmake:
 	@echo building for ${BUILD_TARGETS}
 	@$(foreach t, ${BUILD_TARGETS}, \
 		${_BUILD_ENV} echo $@ Begin; echo Entering directory \'obj.${t}\' && ${MAKE} -C obj.${t} -f ${MK_PATH}/${MK} -I${_QMK} QMK=${_QMK} QINC=$(dir ${_QMK}) BUILD_TARGET=${t} BUILD_HOST=${BUILD_HOST} ${_DESTDIR_VAR} $@ && echo Leaving directory \'obj.${t}\' && ) echo $@ Done

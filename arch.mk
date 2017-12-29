@@ -1,5 +1,5 @@
 ##################################################
-## file: //QInc/Projects/qmk/arch.mk
+## file: //QInc/qmk/arch.mk
 ##
 ## (C) Copyright Eric L. Hernes -- Wednesday, January 1, 2014
 ##
@@ -24,8 +24,8 @@ ifeq (${BUILD_HOST},Darwin)
 ############################################################
 ## Darwin Host
 ##
-QINC?=${HOME}/work/QInc/Projects/QCore
-UKKO?=${HOME}/work/QInc/Projects/Ukko
+QINC?=${HOME}/work/QInc/QCore
+UKKO?=${HOME}/work/QInc/Ukko
 UKKO_CONTRIB=${UKKO}/software/contrib
 UKKO_FW=${UKKO}/firmware/libs
 AVPGH?=${HOME}/work/QInc/AVProGH
@@ -36,6 +36,7 @@ NANOPB_GENERATOR=nanopb_generator
 NANOPB_FLAGS=-L "\#include <libnanopb/%s>"
 
 APIGEN=${UKKO}/software/apigen/obj.Darwin/apigen
+CIVETFS=${UKKO}/software/civetfs/obj.Darwin/civetfs
 
 ifeq (${BUILD_TARGET},Darwin)
 ########################################
@@ -45,7 +46,7 @@ CROSS=
 EXE=
 #ARCH-Darwin?=-arch i386 -arch x86_64
 ARCH-Darwin?=-arch x86_64
-ARCH_FLAGS?=-mmacosx-version-min=10.10
+ARCH_FLAGS?=-mmacosx-version-min=10.13
 #QMAKE=/opt/local/libexec/qt4/bin/qmake
 #QMAKE?=/usr/local/bin/qmake
 QMAKE?=${HOME}/Qt/5.9.1/clang_64/bin/qmake
@@ -104,8 +105,8 @@ endif
 RM=rm -f
 
 else ifeq (${BUILD_HOST},Windows)
-QINC?=${USERPROFILE}/Documents/QInc/Projects/QCore
-UKKO?=${USERPROFILE}/Documents/QInc/Projects/Ukko
+QINC?=${USERPROFILE}/Documents/QInc/QCore
+UKKO?=${USERPROFILE}/Documents/QInc/Ukko
 AVPGH?=${USERPROFILE}/Documents/QInc/AVProGH
 CONTRIB=${QINC}/contrib
 

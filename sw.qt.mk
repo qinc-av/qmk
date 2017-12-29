@@ -1,5 +1,5 @@
 ##################################################
-## file: //QInc/Projects/qmk/sw.qt.mk
+## file: //QInc/qmk/sw.qt.mk
 ##
 ## (C) Copyright Eric L. Hernes -- Saturday, March 5, 2016
 ##

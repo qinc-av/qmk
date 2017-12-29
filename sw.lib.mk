@@ -1,5 +1,5 @@
 ##################################################
-## file: //QInc/Projects/qmk/sw.lib.mk
+## file: //QInc/qmk/sw.lib.mk
 ##
 ## (C) Copyright Eric L. Hernes -- Wednesday, January 1, 2014
 ##
@@ -30,13 +30,6 @@ OBJS=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
 #$(foreach s,${SRCS},$(eval $(call obj_rule, ${SRCDIR}${s})))
 
 include ${QMK}/arch.mk
-
-ifeq (${NO_Q_INCLUDES},)
-INCLUDES+=${QINC}/software/libs ${UKKO}/software ${CONTRIB} ${AVPGH}/software
-endif
-
-INCLUDES+=${INCLUDES-${BUILD_TARGET}}
-DEFINES+=${DEFINES-${BUILD_TARGET}}
 
 include ${QMK}/sw.obj.mk
 

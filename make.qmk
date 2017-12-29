@@ -11,7 +11,5 @@ ifeq (${mk},)
 else
   mk-path=
 endif
-$(info mk is ${mk-path}${mk})
-$(info QMK is ${QMK})
 
 include ${mk-path}${mk}

@@ -1,5 +1,5 @@
 ##################################################
-## file: //QInc/Projects/qmk/subdir.mk
+## file: //QInc/qmk/subdir.mk
 ##
 ## (C) Copyright Eric L. Hernes -- Wednesday, January 1, 2014
 ##

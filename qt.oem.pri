@@ -15,7 +15,7 @@ win32 {
 
 macx {
   BUILD_TARGET=Darwin
-  QMAKE_MACOSX_DEPLOYMENT_TARGET=10.10
+#  QMAKE_MACOSX_DEPLOYMENT_TARGET=10.10
   PKG_CONFIG=pkg-config
 
   libColorAnalyzer_extra+=-F$${QINC}/software/Libs/libColorAnalyzer/Frameworks -framework SipFrame -framework i1d3SDK

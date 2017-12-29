@@ -1,5 +1,5 @@
 ##################################################
-## file: //QInc/Projects/qmk/iar.proj.mk
+## file: //QInc/qmk/iar.proj.mk
 ##
 ## (C) Copyright Eric L. Hernes -- Monday, September 15, 2014
 ##
