@@ -13,6 +13,11 @@ SRCDIR=$(dir ${CURDIR})
 # Add any platform specific sources
 SRCS+=${SRCS-${BUILD_TARGET}} ${SRCS-${BASE_PLATFORM}}
 
+# special case for linux variants
+ifeq (Linux-,$(findstring Linux-,${BUILD_TARGET}))
+SRCS+=${SRCS-Linux}
+endif
+
 ifneq (${PROTO},)
 PROTO_GENSRC=$(patsubst %,%.pb.c,${PROTO})
 PROTO_GENHDR=$(patsubst %,%.pb.h,${PROTO})
@@ -30,7 +35,7 @@ _SRC_DIRS=$(sort $(foreach s,${SRCS},$(dir ${s})))
 VPATH+=$(patsubst %,${SRCDIR}/%,${_SRC_DIRS})
 
 ifeq (${NO_Q_INCLUDES},)
-INCLUDES+=${QINC}/software/libs ${UKKO}/software ${CONTRIB}
+INCLUDES+=${QCORE}/software/libs ${UKKO}/software ${CONTRIB}
 endif
 
 INCLUDES+=${SRCDIR}/..

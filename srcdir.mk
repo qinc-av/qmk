@@ -6,7 +6,7 @@
 ## Makefile to build something
 ##
 
-BUILD_TARGETS-Darwin?=Darwin Mingw Linux-arm Linux-dart Linux-rpi
+BUILD_TARGETS-Darwin?=Darwin Linux-arm Linux-dart Linux-rpi
 BUILD_TARGETS-Windows?=Mingw
 
 TEST?=test
@@ -38,10 +38,9 @@ $(foreach t, $(wildcard ${QMK}/*.mk), $(eval $(notdir ${t})=${t}))
 ifneq (${ProgramFiles},)
 BUILD_HOST?=Windows
 else
-BUILD_HOST?=$(shell uname)
+#BUILD_HOST?=$(shell uname)
+BUILD_HOST?=Darwin
 endif
-
-_QMK=$(abspath ${QMK})
 
 _BUILD_TARGETS=${BUILD_TARGETS-${BUILD_HOST}}
 
@@ -62,4 +61,7 @@ endif
 all clean test cleantest release cleanrelease distro install qmake:
 	@echo building for ${BUILD_TARGETS}
 	@$(foreach t, ${BUILD_TARGETS}, \
-		${_BUILD_ENV} echo $@ Begin; echo Entering directory \'obj.${t}\' && ${MAKE} -C obj.${t} -f ${MK_PATH}/${MK} -I${_QMK} QMK=${_QMK} QINC=$(dir ${_QMK}) BUILD_TARGET=${t} BUILD_HOST=${BUILD_HOST} ${_DESTDIR_VAR} $@ && echo Leaving directory \'obj.${t}\' && ) echo $@ Done
+		${_BUILD_ENV} echo $@ Begin; echo Entering directory \'obj.${t}\' && ${MAKE} -C obj.${t} -f ${MK_PATH}/${MK} -I${_QMK} QMK=${_QMK} BUILD_TARGET=${t} BUILD_HOST=${BUILD_HOST} ${_DESTDIR_VAR} $@ && echo Leaving directory \'obj.${t}\' && ) echo $@ Done
+
+objdirs:
+	mkdir -p $(patsubst %,obj.%,${_BUILD_TARGETS})

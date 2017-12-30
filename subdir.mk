@@ -3,12 +3,12 @@
 ##
 ## (C) Copyright Eric L. Hernes -- Wednesday, January 1, 2014
 ##
-## Makefile to build something
+## Makefile to recurse build subdirectories
 ##
 
-_QMK=$(abspath ${QMK})
+QMK?=$(dir $(realpath $(lastword ${MAKEFILE_LIST})))
 
-include ${_QMK}/arch.mk
+include ${QMK}/arch.mk
 
 .PHONY: subdirs ${SUBDIRS}
 
@@ -18,8 +18,8 @@ _SUBDIRS=${SUBDIRS} ${SUBDIRS-${BUILD_HOST}} ${SUBDIRS-${BUILD_TARGET}}
 #$(info BUILD_TARGET is ${BUILD_TARGET})
 #$(info BUILD_HOST is ${BUILD_HOST})
 
-all clean install:
-	$(foreach d, ${_SUBDIRS}, echo Building ${d} && $(MAKE) -C ${d} -I ${QMK}/mk QMK=${_QMK} $@ &&) echo ok
+all clean install objdirs:
+	$(foreach d, ${_SUBDIRS}, echo Building ${d} && $(MAKE) -C ${d} -I ${QMK}/mk -f ${QMK}/make.qmk $@ &&) echo ok
 
 export:
 	$(foreach d, ${EXPORTS-${OEM}}, echo Exporting ${d} for ${OEM} && $(MAKE) -C ${d} -I ${QMK}/mk QMK=${_QMK} DESTDIR=${DESTDIR-${OEM}} install &&) echo ok

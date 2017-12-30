@@ -1,6 +1,8 @@
 #!/bin/sh
 __shebang_exec_hack=0 exec make -f ${0} ${@}
-QMK?=$(dir $(realpath $(lastword ${MAKEFILE_LIST})))
+_QMK?=$(dir $(realpath $(lastword ${MAKEFILE_LIST})))
+QMK:=${_QMK}
+
 ifeq (${mk},)
   ifeq (,$(wildcard Makefile))
     mk=srcdir.mk

@@ -20,16 +20,15 @@ else
 OPTDBG?=-g3 -O0
 endif
 
+include $(info arch.mk: $(dir $(realpath $(lastword ${MAKEFILE_LIST}))))
+
 ifeq (${BUILD_HOST},Darwin)
 ############################################################
 ## Darwin Host
 ##
-QINC?=${HOME}/work/QInc/QCore
+QCORE?=${HOME}/work/QInc/QCore
 UKKO?=${HOME}/work/QInc/Ukko
-UKKO_CONTRIB=${UKKO}/software/contrib
-UKKO_FW=${UKKO}/firmware/libs
 AVPGH?=${HOME}/work/QInc/AVProGH
-CONTRIB=${QINC}/contrib
 
 PROTOC=protoc
 NANOPB_GENERATOR=nanopb_generator
@@ -100,15 +99,15 @@ else
 ########################################
 ## Undefined on Darwin
 ##
-$(warning ignoring invalid BUILD_TARGET=${BUILD_TARGET})
+$(warning unknown BUILD_TARGET=${BUILD_TARGET})
 endif
 RM=rm -f
 
 else ifeq (${BUILD_HOST},Windows)
-QINC?=${USERPROFILE}/Documents/QInc/QCore
+QCORE?=${USERPROFILE}/Documents/QInc/QCore
 UKKO?=${USERPROFILE}/Documents/QInc/Ukko
 AVPGH?=${USERPROFILE}/Documents/QInc/AVProGH
-CONTRIB=${QINC}/contrib
+CONTRIB?=${QCORE}/contrib
 
 ifdef WIN_XP
 ARCH-Mingw?=-m32 -DWIN_XP
@@ -121,6 +120,10 @@ LDFLAGS+=-static
 endif
 
 ARCH_FLAGS+=${ARCH-${BUILD_TARGET}}
+
+UKKO_CONTRIB=${UKKO}/software/contrib
+UKKO_FW=${UKKO}/firmware/libs
+CONTRIB=${QCORE}/contrib
 
 CC=${CROSS}gcc ${ARCH_FLAGS}
 CXX=${CROSS}c++ ${ARCH_FLAGS}

@@ -22,7 +22,7 @@ define printlibs
   $(foreach l,$(patsubst lib%,%,$(notdir $(wildcard ${1}/lib*))),$(info lib_${l} :: ${lib_${l}}))
 endef
 
-XLIB_PATH+=${SRCDIR}/.. ${QINC}/software/libs ${QINC}/contrib  
+XLIB_PATH+=${SRCDIR}/.. ${QCORE}/software/libs ${QCORE}/contrib  
 XLIB_PATH+=${UKKO}/software ${UKKO}/software/contrib
 
 $(foreach ld,${XLIB_PATH}, $(call findlibs,${ld}))
@@ -43,9 +43,9 @@ lib_httpclient-Mingw=-lws2_32
 lib_curlpp-Darwin=${lib_curl}
 lib_curlpp-Mingw=${lib_curl}
 
-lib_ColorAnalyzer-Darwin=-F ${QINC}/software/Libs/libColorAnalyzer/Frameworks -framework SipFrame -framework i1d3SDK
-lib_ColorAnalyzer-Mingw =${QINC}/software/Libs/libColorAnalyzer/XRite/Win32/i386/SipCal.lib
-lib_ColorAnalyzer-Mingw+=${QINC}/software/Libs/libColorAnalyzer/XRite/Win32/i386/i1d3SDK.lib
+lib_ColorAnalyzer-Darwin=-F ${QCORE}/software/libs/libColorAnalyzer/Frameworks -framework SipFrame -framework i1d3SDK
+lib_ColorAnalyzer-Mingw =${QCORE}/software/libs/libColorAnalyzer/XRite/Win32/i386/SipCal.lib
+lib_ColorAnalyzer-Mingw+=${QCORE}/software/libs/libColorAnalyzer/XRite/Win32/i386/i1d3SDK.lib
 
 #
 # Other pre-installed libs
@@ -63,7 +63,7 @@ LDFLAGS+=${CXX_STD} ${_LIBS} ${LIBS-${BUILD_TARGET}} ${LDFLAGS-${BUILD_TARGET}}
 
 LDFLAGS+=${LDFLAGS-${BUILD_TARGET}}
 
-lib_PRISMA=${QINC}/software/Libs/prisma-sdk/obj.${BUILD_TARGET}/libprisma.a
+lib_PRISMA=${QCORE}/software/libs/prisma-sdk/obj.${BUILD_TARGET}/libprisma.a
 
 all: ${PROG}${EXE}
 
