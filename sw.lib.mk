@@ -48,11 +48,12 @@ clean:
 	${RM} lib${LIB}.a ${OBJS} ${CLEANFILES}
 
 LIBDIR?=${_DESTDIR}/lib/obj.${BUILD_TARGET}
+INCLUDEDIR?=${_DESTDIR}/include
 
 install: lib${LIB}.a
-	@for d in $(patsubst %/,%,$(sort $(dir ${PUBLIC_HEADER}))); do test -d ${_DESTDIR}/include/lib${LIB}/$${d} || mkdir -p ${_DESTDIR}/include/lib${LIB}/$${d}; done
-	@echo install public header: ${PUBLIC_HEADER} ${_DESTDIR}/include/lib${LIB}
-	@s=${SRCDIR}; for h in ${PUBLIC_HEADER}; do cp $${s}/$${h} ${_DESTDIR}/include/lib${LIB}/$${h}; done
+	@for d in $(patsubst %/,%,$(sort $(dir ${PUBLIC_HEADER}))); do test -d ${INCLUDEDIR}/lib${LIB}/$${d} || mkdir -p ${INCLUDEDIR}/lib${LIB}/$${d}; done
+	@echo install public header: ${PUBLIC_HEADER} ${INCLUDEDIR}/lib${LIB}
+	@s=${SRCDIR}; for h in ${PUBLIC_HEADER}; do cp $${s}/$${h} ${INCLUDEDIR}/lib${LIB}/$${h}; done
 	@test -d ${LIBDIR} || mkdir -p ${LIBDIR}
 	@echo install library: ${LIBDIR}/lib${LIB}.a
 	@cp lib${LIB}.a ${LIBDIR}
