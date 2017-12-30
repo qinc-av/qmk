@@ -55,7 +55,7 @@ $(info using gnumake: ${MK_PATH}/${MK})
 endif
 
 ifneq (DESTDIR,)
- _DESTDIR=${DESTDIR}
+ _DESTDIR_VAR=_DESTDIR=${DESTDIR}
 endif
 
 all clean test cleantest release cleanrelease distro install qmake:
