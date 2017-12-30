@@ -28,12 +28,13 @@ XLIB_PATH+=${UKKO}/software ${UKKO}/software/contrib
 $(foreach ld,${XLIB_PATH}, $(call findlibs,${ld}))
 
 ifeq (${QMK_DEBUG},debug)
+$(info XLIB_PATH: ${XLIB_PATH})
 $(foreach ld,${XLIB_PATH}, $(call printlibs,${ld}))
 endif
 
 #  
 # # contrib libs
-lib_sqlite=${UKKO}/software/contrib/sqlite3/obj.${BUILD_TARGET}/libsqlite3.a
+lib_sqlite3=${UKKO}/software/contrib/sqlite3/obj.${BUILD_TARGET}/libsqlite3.a
 
 #
 # Arch/Platform specific additional libs
@@ -56,12 +57,21 @@ lib_curl = $(shell ${PKG_CONFIG} --libs libcurl)
 lib_magick = $(shell ${PKG_CONFIG} --libs ImageMagick++)
 lib_usb = $(shell ${PKG_CONFIG} --libs libusb-1.0)
 
+#
+# try to expand lib_${l} to a full path,
+#   otherwise just assume -l${l},
+#   but don't add to dependencies
 _LIBS=$(foreach l,${LIBS},${lib_${l}})
+LDADD+=$(foreach l,${LIBS},$(if ${lib_${l}},,-l${l}))
+
 LIBS-${BUILD_TARGET}+=$(foreach l,${LIBS},${lib_${l}-${BUILD_TARGET}})
 
 LDFLAGS+=${CXX_STD} ${_LIBS} ${LIBS-${BUILD_TARGET}} ${LDFLAGS-${BUILD_TARGET}}
 
 LDFLAGS+=${LDFLAGS-${BUILD_TARGET}}
+ifeq (Linux-,$(findstring Linux-,${BUILD_TARGET}))
+LDFLAGS+=${LDFLAGS-Linux}
+endif
 
 lib_PRISMA=${QCORE}/software/libs/prisma-sdk/obj.${BUILD_TARGET}/libprisma.a
 
@@ -73,3 +83,15 @@ ${PROG}${EXE}: ${BUILD_DEPENDS} ${OBJS} ${_LIBS}
 
 clean:
 	${RM} ${PROG}${EXE} ${OBJS} ${CLEANFILES}
+
+progdir-user=bin
+progdir-sysadmin=sbin
+progdir-daemon=lib/${PROG}
+
+PROG_CLASS:=$(if ${PROG_CLASS},${PROG_CLASS},user)
+BINDIR=${PREFIX}/${progdir-${PROG_CLASS}}
+
+install: ${PROG}${EXE}
+	@test -d ${BINDIR} || echo mkdir -p ${BINDIR}
+	@echo install program: ${BINDIR}/${PROG}${EXE}
+	@echo install -s ${PROG}${EXE} ${BINDIR}

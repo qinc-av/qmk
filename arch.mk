@@ -95,11 +95,24 @@ QMAKE_SPEC=
 #SYSROOT=${HOME}/work/QInc/Elac/DDP2/sysroots/imx6ul-var-dart
 #ARCH_FLAGS=-nostdinc --sysroot ${SYSROOT} -isystem ${SYSROOT}/usr/include
 
+else ifeq (${BUILD_TARGET},Linux-oe)
+########################################
+## Linux Open Empedded build
+##
+TOOLCHAIN_OK=1
+LEX=flex
+$(info CXX is $(origin CXX) : ${CXX})
+
+#CFLAGS-Linux-oe+=${TARGET_CFLAGS}
+#CXXFLAGS-Linux-oe+=${TARGET_CXXFLAGS}
+
 else
 ########################################
 ## Undefined on Darwin
 ##
 $(warning unknown BUILD_TARGET=${BUILD_TARGET})
+#don't screw up toolchain
+TOOLCHAIN_OK=1
 endif
 RM=rm -f
 
@@ -125,6 +138,7 @@ UKKO_CONTRIB=${UKKO}/software/contrib
 UKKO_FW=${UKKO}/firmware/libs
 CONTRIB=${QCORE}/contrib
 
+ifeq (${TOOLCHAIN_OK},)
 CC=${CROSS}gcc ${ARCH_FLAGS}
 CXX=${CROSS}c++ ${ARCH_FLAGS}
 LD=${CROSS}ld
@@ -133,9 +147,10 @@ RANLIB=${CROSS}ranlib
 AS=${CROSS}as
 PKG_CONFIG=${CROSS}pkg-config
 STRIP=${CROSS}strip
+endif
 
 DEFINES+=HOST_SOFTWARE
 
 ##
 ## Defines for OEM stuffs
-DESTDIR-AVPGH=${AVPGH}/QInc
+PREFIX-AVPGH=${AVPGH}/QInc

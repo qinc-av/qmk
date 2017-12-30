@@ -47,8 +47,8 @@ lib${LIB}.a: ${OBJS}
 clean:
 	${RM} lib${LIB}.a ${OBJS} ${CLEANFILES}
 
-LIBDIR?=${_DESTDIR}/lib/obj.${BUILD_TARGET}
-INCLUDEDIR?=${_DESTDIR}/include
+LIBDIR?=${PREFIX}/lib/obj.${BUILD_TARGET}
+INCLUDEDIR?=${PREFIX}/include
 
 install: lib${LIB}.a
 	@for d in $(patsubst %/,%,$(sort $(dir ${PUBLIC_HEADER}))); do test -d ${INCLUDEDIR}/lib${LIB}/$${d} || mkdir -p ${INCLUDEDIR}/lib${LIB}/$${d}; done

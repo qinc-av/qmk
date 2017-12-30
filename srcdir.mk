@@ -54,14 +54,14 @@ else ifneq ($(wildcard ${MK}),)
 $(info using gnumake: ${MK_PATH}/${MK})
 endif
 
-ifneq (DESTDIR,)
- _DESTDIR_VAR=_DESTDIR=${DESTDIR}
+ifneq (PREFIX,)
+ PREFIX_VAR=PREFIX=${PREFIX}
 endif
 
 all clean test cleantest release cleanrelease distro install qmake:
 	@echo building for ${BUILD_TARGETS}
 	@$(foreach t, ${BUILD_TARGETS}, \
-		${_BUILD_ENV} echo $@ Begin; echo Entering directory \'obj.${t}\' && ${MAKE} -C obj.${t} -f ${MK_PATH}/${MK} -I${_QMK} QMK=${_QMK} BUILD_TARGET=${t} BUILD_HOST=${BUILD_HOST} ${_DESTDIR_VAR} $@ && echo Leaving directory \'obj.${t}\' && ) echo $@ Done
+		${_BUILD_ENV} echo $@ Begin; echo Entering directory \'obj.${t}\' && ${MAKE} -C obj.${t} -f ${MK_PATH}/${MK} -I${_QMK} QMK=${_QMK} BUILD_TARGET=${t} BUILD_HOST=${BUILD_HOST} ${PREFIX_VAR} $@ && echo Leaving directory \'obj.${t}\' && ) echo $@ Done
 
 objdirs:
 	mkdir -p $(patsubst %,obj.%,${_BUILD_TARGETS})

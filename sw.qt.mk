@@ -31,8 +31,6 @@ ifeq (${RELEASE},)
 QMAKE_OPT+="CONFIG+=debug"
 endif
 
-unexport DESTDIR
-
 #
 # http://doc.qt.io/qt-5/qmake-advanced-usage.html
 # QMAKEPATH looks for features in ${QMK}/mkspecs/features/*.prf

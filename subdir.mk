@@ -22,4 +22,4 @@ all clean install objdirs:
 	$(foreach d, ${_SUBDIRS}, echo Building ${d} && $(MAKE) -C ${d} -I ${QMK}/mk -f ${QMK}/make.qmk $@ &&) echo ok
 
 export:
-	$(foreach d, ${EXPORTS-${OEM}}, echo Exporting ${d} for ${OEM} && $(MAKE) -C ${d} -I ${QMK}/mk QMK=${_QMK} DESTDIR=${DESTDIR-${OEM}} install &&) echo ok
+	$(foreach d, ${EXPORTS-${OEM}}, echo Exporting ${d} for ${OEM} && $(MAKE) -C ${d} -I ${QMK}/mk QMK=${_QMK} PREFIX=${PREFIX-${OEM}} install &&) echo ok
