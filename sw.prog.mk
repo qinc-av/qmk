@@ -71,6 +71,7 @@ LDFLAGS+=${CXX_STD} ${_LIBS} ${LIBS-${BUILD_TARGET}} ${LDFLAGS-${BUILD_TARGET}}
 LDFLAGS+=${LDFLAGS-${BUILD_TARGET}}
 ifeq (Linux-,$(findstring Linux-,${BUILD_TARGET}))
 LDFLAGS+=${LDFLAGS-Linux}
+LDADD+=${LDADD-Linux}
 endif
 
 lib_PRISMA=${QCORE}/software/libs/prisma-sdk/obj.${BUILD_TARGET}/libprisma.a
@@ -92,6 +93,6 @@ PROG_CLASS:=$(if ${PROG_CLASS},${PROG_CLASS},user)
 BINDIR=${PREFIX}/${progdir-${PROG_CLASS}}
 
 install: ${PROG}${EXE}
-	@test -d ${BINDIR} || echo mkdir -p ${BINDIR}
+	@test -d ${BINDIR} || mkdir -p ${BINDIR}
 	@echo install program: ${BINDIR}/${PROG}${EXE}
-	@echo install -s ${PROG}${EXE} ${BINDIR}
+	@install -s ${PROG}${EXE} ${BINDIR}

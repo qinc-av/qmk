@@ -101,7 +101,8 @@ else ifeq (${BUILD_TARGET},Linux-oe)
 ##
 TOOLCHAIN_OK=1
 LEX=flex
-$(info CXX is $(origin CXX) : ${CXX})
+APIGEN=apigen
+CIVETFS=civetfs
 
 #CFLAGS-Linux-oe+=${TARGET_CFLAGS}
 #CXXFLAGS-Linux-oe+=${TARGET_CXXFLAGS}
