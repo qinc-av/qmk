@@ -93,6 +93,6 @@ PROG_CLASS:=$(if ${PROG_CLASS},${PROG_CLASS},user)
 BINDIR=${PREFIX}/${progdir-${PROG_CLASS}}
 
 install: ${PROG}${EXE}
-	@test -d ${BINDIR} || mkdir -p ${BINDIR}
+	@test -d ${BINDIR} || install -d ${BINDIR}
 	@echo install program: ${BINDIR}/${PROG}${EXE}
-	@install -s ${PROG}${EXE} ${BINDIR}
+	@install ${PROG}${EXE} ${BINDIR}
