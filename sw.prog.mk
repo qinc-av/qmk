@@ -27,7 +27,7 @@ XLIB_PATH+=${UKKO}/software ${UKKO}/software/contrib
 
 $(foreach ld,${XLIB_PATH}, $(call findlibs,${ld}))
 
-ifeq (${QMK_DEBUG},debug)
+ifneq (${QMK_DEBUG},)
 $(info XLIB_PATH: ${XLIB_PATH})
 $(foreach ld,${XLIB_PATH}, $(call printlibs,${ld}))
 endif

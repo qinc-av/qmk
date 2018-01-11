@@ -9,7 +9,7 @@
 ifneq (${ProgramFiles},)
 BUILD_HOST=Windows
 else
-BUILD_HOST=Darwin
+BUILD_HOST=$(shell uname)
 endif
 
 CXX_STD?=-std=c++11
@@ -20,11 +20,12 @@ else
 OPTDBG?=-g3 -O0
 endif
 
-include $(info arch.mk: $(dir $(realpath $(lastword ${MAKEFILE_LIST}))))
-
-ifeq (${BUILD_HOST},Darwin)
+#
+# Build Host details -
+#  paths and programs
+ifneq (,$(filter ${BUILD_HOST}, Linux Darwin))
 ############################################################
-## Darwin Host
+## Darwin/Linux Host
 ##
 QCORE?=${HOME}/work/QInc/QCore
 UKKO?=${HOME}/work/QInc/Ukko
@@ -34,90 +35,13 @@ PROTOC=protoc
 NANOPB_GENERATOR=nanopb_generator
 NANOPB_FLAGS=-L "\#include <libnanopb/%s>"
 
-APIGEN=${UKKO}/software/apigen/obj.Darwin/apigen
-CIVETFS=${UKKO}/software/civetfs/obj.Darwin/civetfs
+APIGEN?=${UKKO}/software/apigen/obj.Darwin/apigen
+CIVETFS?=${UKKO}/software/civetfs/obj.Darwin/civetfs
 
-ifeq (${BUILD_TARGET},Darwin)
-########################################
-## Darwin Native
-##
-CROSS=
-EXE=
-#ARCH-Darwin?=-arch i386 -arch x86_64
-ARCH-Darwin?=-arch x86_64
-ARCH_FLAGS?=-mmacosx-version-min=10.13
-#QMAKE=/opt/local/libexec/qt4/bin/qmake
-#QMAKE?=/usr/local/bin/qmake
-QMAKE?=${HOME}/Qt/5.9.1/clang_64/bin/qmake
-#QMAKE_SPEC=-spec macx-clang-32
-
-else ifeq (${BUILD_TARGET},Mingw)
-########################################
-## Mingw cross on Darwin
-##
-ifdef WIN_XP
-ARCH-Mingw=-m32 -DWIN_XP
-endif
-CROSS=i686-w64-mingw32.static-
-EXE=.exe
-QMAKE=${CROSS}qmake-qt5
-QMAKE_SPEC=
-
-else ifeq (${BUILD_TARGET},Linux-arm)
-########################################
-## Linux-ARM cross on Darwin
-##
-ARCH-Linux-arm=
-CROSS=armv7-qinc-linux-gnueabi-
-EXE=
-QMAKE=${CROSS}qmake-qt5
-QMAKE_SPEC=
-
-else ifeq (${BUILD_TARGET},Linux-rpi)
-########################################
-## Linux-ARM cross on Darwin
-##
-ARCH-Linux-arm=
-CROSS=armv7-qinc-linux-gnueabi-
-EXE=
-QMAKE=${CROSS}qmake-qt5
-QMAKE_SPEC=
-
-else ifeq (${BUILD_TARGET},Linux-dart)
-########################################
-## Linux-ARM for imx6ul/dart cross on Darwin
-##
-ARCH-Linux-dart=
-CROSS=arm-imx6_dart-linux-gnueabihf-
-EXE=
-QMAKE=${CROSS}qmake-qt5
-QMAKE_SPEC=
-#SYSROOT=${HOME}/work/QInc/Elac/DDP2/sysroots/imx6ul-var-dart
-#ARCH_FLAGS=-nostdinc --sysroot ${SYSROOT} -isystem ${SYSROOT}/usr/include
-
-else ifeq (${BUILD_TARGET},Linux-oe)
-########################################
-## Linux Open Empedded build
-##
-TOOLCHAIN_OK=1
-LEX=flex
-APIGEN=apigen
-CIVETFS=civetfs
-
-#CFLAGS-Linux-oe+=${TARGET_CFLAGS}
-#CXXFLAGS-Linux-oe+=${TARGET_CXXFLAGS}
-
-else
-########################################
-## Undefined on Darwin
-##
-$(warning unknown BUILD_TARGET=${BUILD_TARGET})
-#don't screw up toolchain
-TOOLCHAIN_OK=1
-endif
 RM=rm -f
 
 else ifeq (${BUILD_HOST},Windows)
+
 QCORE?=${USERPROFILE}/Documents/QInc/QCore
 UKKO?=${USERPROFILE}/Documents/QInc/Ukko
 AVPGH?=${USERPROFILE}/Documents/QInc/AVProGH
@@ -131,6 +55,14 @@ CROSS=c:/TDM-GCC-64/bin/
 EXE=.exe
 RM=del
 LDFLAGS+=-static
+
+endif # BUILD_HOSTS
+
+ifeq ($(wildcard ${QMK}/cfg/${BUILD_HOST}-${BUILD_TARGET}.mk),)
+$(warning unknown build config=${BUILD_HOST}-${BUILD_TARGET})
+TOOLCHAIN_OK=1
+else
+include ${QMK}/cfg/${BUILD_HOST}-${BUILD_TARGET}.mk
 endif
 
 ARCH_FLAGS+=${ARCH-${BUILD_TARGET}}

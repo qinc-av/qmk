@@ -6,8 +6,9 @@
 ## Makefile to build something
 ##
 
-BUILD_TARGETS-Darwin?=Darwin Linux-arm Linux-dart Linux-rpi
+BUILD_TARGETS-Darwin?=Darwin Linux-arm Linux-dart Linux-rpi Mingw
 BUILD_TARGETS-Windows?=Mingw
+BUILD_TARGETS-Linux?=Linux oe
 
 TEST?=test
 RELEASE?=release
@@ -38,8 +39,7 @@ $(foreach t, $(wildcard ${QMK}/*.mk), $(eval $(notdir ${t})=${t}))
 ifneq (${ProgramFiles},)
 BUILD_HOST?=Windows
 else
-#BUILD_HOST?=$(shell uname)
-BUILD_HOST?=Darwin
+BUILD_HOST?=$(shell uname)
 endif
 
 _BUILD_TARGETS=${BUILD_TARGETS-${BUILD_HOST}}
