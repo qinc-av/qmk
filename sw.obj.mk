@@ -35,7 +35,7 @@ _SRC_DIRS=$(sort $(foreach s,${SRCS},$(dir ${s})))
 VPATH+=$(patsubst %,${SRCDIR}/%,${_SRC_DIRS})
 
 ifeq (${NO_Q_INCLUDES},)
-INCLUDES+=${QCORE}/software/libs ${UKKO}/software ${CONTRIB}
+INCLUDES+=${QCORE}/software/libs ${QCORE}/contrib ${UKKO_SW} ${UKKO_FW} ${UKKO_CONTRIB}
 endif
 
 INCLUDES+=${SRCDIR}/..

@@ -68,6 +68,7 @@ endif
 ARCH_FLAGS+=${ARCH-${BUILD_TARGET}}
 
 UKKO_CONTRIB=${UKKO}/software/contrib
+UKKO_SW=${UKKO}/software
 UKKO_FW=${UKKO}/firmware/libs
 CONTRIB=${QCORE}/contrib
 
