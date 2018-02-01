@@ -38,6 +38,8 @@ NANOPB_FLAGS=-L "\#include <libnanopb/%s>"
 APIGEN?=${UKKO}/software/apigen/obj.Darwin/apigen
 CIVETFS?=${UKKO}/software/civetfs/obj.Darwin/civetfs
 
+VERILATOR=verilator
+
 RM=rm -f
 
 else ifeq (${BUILD_HOST},Windows)

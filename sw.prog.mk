@@ -79,9 +79,19 @@ lib_PRISMA=${QCORE}/software/libs/prisma-sdk/obj.${BUILD_TARGET}/libprisma.a
 
 all: ${PROG}${EXE}
 
+ifeq (${VMOD},)
 ${PROG}${EXE}: ${BUILD_DEPENDS} ${OBJS} ${_LIBS}
 	echo ${OBJS}
 	${CXX} -o $@ ${OBJS} ${LDFLAGS} ${LDADD-${BUILD_TARGET}} ${LDADD}
+else
+  _VFLAGS=--cc ${VSRCS} --top-module ${VMOD} -Mdir verilator -y ${SRCDIR} ${VFLAGS}
+  INCLUDES+=${CURDIR}/verilator
+  CLEANFILES+=verilator/*
+${OBJS}: ${OBJDIR}/verilator/V${VERILATOR}__ALL.a
+${OBJDIR}/verilator/V${VERILATOR}__ALL.a: ${VSRC}
+	${VERILATOR} ${_VFLAGS}
+	${MAKE} -C verilator -f V${VMOD}.mk
+endif
 
 clean:
 	${RM} ${PROG}${EXE} ${OBJS} ${CLEANFILES}
@@ -97,3 +107,4 @@ install: ${PROG}${EXE}
 	@test -d ${BINDIR} || install -d ${BINDIR}
 	@echo install program: ${BINDIR}/${PROG}${EXE}
 	@install ${PROG}${EXE} ${BINDIR}
+

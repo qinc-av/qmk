@@ -1,4 +1,4 @@
-########################################
+######################################
 ## file: //QInc/qmk/sw.obj.mk
 ## born-on: Wednesday, January 1, 2014
 ## creator: Eric L. Hernes
