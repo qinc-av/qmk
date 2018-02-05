@@ -79,18 +79,23 @@ lib_PRISMA=${QCORE}/software/libs/prisma-sdk/obj.${BUILD_TARGET}/libprisma.a
 
 all: ${PROG}${EXE}
 
-ifeq (${VMOD},)
-${PROG}${EXE}: ${BUILD_DEPENDS} ${OBJS} ${_LIBS}
-	echo ${OBJS}
-	${CXX} -o $@ ${OBJS} ${LDFLAGS} ${LDADD-${BUILD_TARGET}} ${LDADD}
+ifneq (${VMOD},)
+# verilator simulation
+  VDIR=vobj
+  _VFLAGS=--cc ${VSRCS} --top-module ${VMOD} -Mdir ${VDIR} -y ${SRCDIR} ${VFLAGS}
+
+  ABS_SRCS=$(patsubst %,${SRCDIR}/%,${SRCS})
+  CLEANFILES+=${VDIR}/*
+
+${PROG}${EXE}: ${OBJDIR}/${VDIR}/${V_MK}
+	${MAKE} -C ${VDIR} -f V${VMOD}.mk
+
+${OBJDIR}/${VDIR}/${V_MK}: ${VSRC} ${SRCS}
+	${VERILATOR} ${_VFLAGS} --exe ${ABS_SRCS} -o ../${PROG}${EXE}
+
 else
-  _VFLAGS=--cc ${VSRCS} --top-module ${VMOD} -Mdir verilator -y ${SRCDIR} ${VFLAGS}
-  INCLUDES+=${CURDIR}/verilator
-  CLEANFILES+=verilator/*
-${OBJS}: ${OBJDIR}/verilator/V${VERILATOR}__ALL.a
-${OBJDIR}/verilator/V${VERILATOR}__ALL.a: ${VSRC}
-	${VERILATOR} ${_VFLAGS}
-	${MAKE} -C verilator -f V${VMOD}.mk
+${PROG}${EXE}: ${BUILD_DEPENDS} ${OBJS} ${_LIBS}
+	${CXX} -o $@ ${OBJS} ${LDFLAGS} ${LDADD-${BUILD_TARGET}} ${LDADD}
 endif
 
 clean:

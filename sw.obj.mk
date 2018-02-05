@@ -27,6 +27,7 @@ endif
 OBJS=$(patsubst %,%.pb.o,${PROTO})
 OBJS+=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
 ifneq (${QMK_DEBUG},)
+$(info SRCDIR is ${SRCDIR})
 $(info SRCS are ${SRCS})
 $(info OBJS are ${OBJS})
 endif
@@ -56,7 +57,7 @@ endif
 
 _CPP_FLAGS=$(patsubst %,-D%,${DEFINES}) $(patsubst %,-I%,${INCLUDES})
 CFLAGS+=${OPTDBG} ${_CPP_FLAGS} ${DEPFLAGS}
-CFLAGS+=${CFLAGS-${BUILD_TARGET}}
+CFLAGS+=${CFLAGS-${BUILD_TARGET}} ${_CPP_FLAGS} ${DEPFLAGS}
 CXXFLAGS+=${CXX_STD} ${OPTDBG} ${_CPP_FLAGS} ${DEPFLAGS}
 CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 
@@ -73,6 +74,9 @@ CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 	${APIGEN} -i js $<
 
 %.o : %.cxx
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
+
+%.o : %.cc
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
 
 ifeq (${NO_DEPS},)
