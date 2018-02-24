@@ -40,7 +40,9 @@ CIVETFS?=${UKKO}/software/civetfs/obj.Darwin/civetfs
 
 VERILATOR=verilator
 
-RM=rm -f
+RM=rm -rf
+MKDIR=mkdir -p
+CP=cp
 
 else ifeq (${BUILD_HOST},Windows)
 

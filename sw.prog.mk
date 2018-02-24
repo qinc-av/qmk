@@ -11,6 +11,23 @@ PROG=$(lastword $(subst /, ,$(dir ${CURDIR})))
 endif
 
 include ${QMK}/arch.mk
+
+API=$(filter %.api,${SRCS})
+JS_API=$(patsubst %.api,%_api.js,${API})
+CIVET_H_API=$(patsubst %.api,%_civet.h,${API})
+
+#
+# HTDOC handling
+ifneq (${HTDOCS},)
+HTDOCS_DIRS=$(sort $(foreach p,${HTDOCS},${CURDIR}/$(dir ${p})))
+HTDOCS_FILES=$(sort $(foreach p,${HTDOCS},${CURDIR}/${p}))
+HTDOCS_TOP=$(firstword ${HTDOCS_DIRS})
+HTDOCS_JS_DIR?=${HTDOCS_TOP}js
+
+BUILD_DEPENDS+=${HTDOCS_DIRS} ${HTDOCS_FILES} ${CIVET_H_API} fsdata.h
+CLEANFILES+=${CIVET_H_API}
+endif
+
 include ${QMK}/sw.obj.mk
 
 # find all the software libraries:
@@ -113,3 +130,21 @@ install: ${PROG}${EXE}
 	@echo install program: ${BINDIR}/${PROG}${EXE}
 	@install ${PROG}${EXE} ${BINDIR}
 
+ifneq (${HTDOCS},)
+
+${HTDOCS_DIRS}:
+	${MKDIR} $@
+
+define copy-rule
+${2}/${1}: ${SRCDIR}/${1}
+	${CP} ${SRCDIR}/${1} ${2}/${1}
+endef
+
+$(foreach p,${HTDOCS},$(eval $(call copy-rule,${p},${CURDIR})))
+
+fsdata.h: ${HTDOCS_FILES} ${API_JS_FILES}
+	${CIVETFS} ${HTDOCS_TOP} >$@
+
+CLEANFILES+=fsdata.h ${HTDOCS_DIRS}
+
+endif

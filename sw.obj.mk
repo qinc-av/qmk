@@ -25,7 +25,7 @@ CLEANFILES+=${PROTO_GENSRC} ${PROTO_GENHDR} $(patsubst %,%.pb,${PROTO})
 endif
 
 OBJS=$(patsubst %,%.pb.o,${PROTO})
-OBJS+=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
+OBJS+=$(patsubst %,%.o,$(basename $(notdir $(filter-out %.api,${SRCS}))))
 ifneq (${QMK_DEBUG},)
 $(info SRCDIR is ${SRCDIR})
 $(info SRCS are ${SRCS})
@@ -70,8 +70,8 @@ CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 %_civet.h : %.api
 	${APIGEN} -i server-civet-h $<
 
-%_api.js: %.api
-	${APIGEN} -i js $<
+%_api.js: %.api ${HTDOCS_JS_DIR}
+	${APIGEN} -i js -d ${HTDOCS_JS_DIR} $<
 
 %.o : %.cxx
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
