@@ -26,6 +26,8 @@ HTDOCS_JS_DIR?=${HTDOCS_TOP}js
 
 BUILD_DEPENDS+=${HTDOCS_DIRS} ${HTDOCS_FILES} ${CIVET_H_API} fsdata.h
 CLEANFILES+=${CIVET_H_API}
+HTDOCS_FILES+=${JS_API}
+
 endif
 
 include ${QMK}/sw.obj.mk
@@ -143,7 +145,7 @@ endef
 $(foreach p,${HTDOCS},$(eval $(call copy-rule,${p},${CURDIR})))
 
 fsdata.h: ${HTDOCS_FILES} ${API_JS_FILES}
-	${CIVETFS} ${HTDOCS_TOP} >$@
+	${CIVETFS} ${HTDOCS_TOP:${CURDIR}/%=%} >$@
 
 CLEANFILES+=fsdata.h ${HTDOCS_DIRS}
 
