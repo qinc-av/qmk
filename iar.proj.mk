@@ -10,6 +10,9 @@ ifeq (${APP},)
 APP=$(notdir ${CURDIR})
 endif
 
+_QMK?=$(dir $(realpath $(lastword ${MAKEFILE_LIST})))
+include ${_QMK}/arch.mk
+
 IARBUILD?=c:/Program Files (x86)/IAR Systems/Embedded Workbench 7.0/common/bin/IarBuild.exe
 
 ifeq ($(shell uname),Darwin)
@@ -19,7 +22,7 @@ CP=cp
 RM_RF=rm -rf
 RM=rm
 CAT=cat
-APIGEN=${CURDIR}/../../../../software/apigen/obj.Darwin/apigen
+APIGEN=${UKKO}/software/apigen/obj.Darwin/apigen
 else
 MAKEFSDATA = ${CURDIR}/../../../../software/contrib/makefsdata/obj.Mingw/makefsdata.exe htdocs_min -f:web_fsdata.h
 JAVA="c:/Program Files/Java/jre7/bin/java.exe"
@@ -30,7 +33,7 @@ FixPath = $(subst /,\,$1)
 RM_RF=rmdir /s /q
 RM=del
 CAT=type
-APIGEN=${CURDIR}\..\..\..\..\software\apigen\obj.Mingw\apigen.exe
+APIGEN=${UKKO}\software\apigen\obj.Mingw\apigen.exe
 endif
 
 WEBCOMPRESS?=${CURDIR}/../../../../software/contrib/webcompress
@@ -84,7 +87,9 @@ fsdata: jsapi
 	$(call FileIterator,js/*.js,${CLOSURE_COMP} --js_output_file,js)
 	${MAKEFSDATA}
 
-API_FILES=$(foreach a, ${API_LIST}, ${CURDIR}/../../../libs/lib${a}/${a}.api)
+API_LIB_PATH+=${CURDIR}/../../libs ${CURDIR}/../../../libs
+API_FILES=$(foreach a, ${API_LIST}, $(wildcard $(patsubst %,%/lib${a}/${a}.api,${API_LIB_PATH})))
+
 ifneq (${APP_API},)
 API_FILES+=${CURDIR}/${APP_API}.api
 endif

@@ -118,10 +118,10 @@ endif
 RM=rm -f
 
 else ifeq (${BUILD_HOST},Windows)
-QCORE?=${USERPROFILE}/Documents/QInc/QCore
-UKKO?=${USERPROFILE}/Documents/QInc/Ukko
-AVPGH?=${USERPROFILE}/Documents/QInc/AVProGH
-CONTRIB?=${QCORE}/contrib
+QCORE?=${USERPROFILE}\Documents\QInc\Projects\QCore
+UKKO?=${USERPROFILE}\Documents\QInc\Projects\Ukko
+AVPGH?=${USERPROFILE}\Documents\QInc\Projects\AVProGH
+CONTRIB?=${QCORE}\contrib
 
 ifdef WIN_XP
 ARCH-Mingw?=-m32 -DWIN_XP
