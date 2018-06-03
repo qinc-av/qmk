@@ -19,8 +19,10 @@ defined (VERSION) {
 
 isEmpty(UKKO) UKKO=$$(HOME)/work/QInc/Ukko
 isEmpty(AVPGH) AVPGH=$$(HOME)/work/QInc/AVProGH
+isEmpty(QCORE) QCORE=$$(HOME)/work/QInc/QCore
+
 INCLUDEPATH += $${QCORE}/software/libs
-LIB_P+=$${QCORE}/software/libs $${QCORE}/contrib $${UKKO}/software $${UKKO}/software/contrib $${AVPGH}/software
+LIB_P+=$${QCORE}/software/libs $${QCORE}/contrib $${UKKO}/software $${UKKO}/firmware/libs $${UKKO}/software/contrib $${AVPGH}/software
 
 PRISMA_SDK=$${QCORE}/software/libs/prisma-sdk
 libPRISMA_SDK=$${PRISMA_SDK}/obj.$${BUILD_TARGET}/libprisma.a
@@ -29,14 +31,14 @@ libSixGIo=$(HOME)/work/QInc/Murideo/libSixGIo/obj.$${BUILD_TARGET}/libSixGIo.a
 
 QWT3D=$${QCORE}/contrib/qwtplot3d
 QWT3D_INC=$${QWT3D}
-libQWT3D=$${QWT3D}/obj.$${BUILD_TARGET}/lib/libqwtplot3d.a
+libQWT3D=$${QWT3D}/obj.$${BUILD_TARGET}/src/libqwtplot3d.a
 contains(QI_LIBS, QWT3D) {
     INCLUDEPATH+=$${QWT3D_INC}
 }
 
 QWT=$${QCORE}/contrib/qwt
 QWT_INC=$${QWT}/src
-libQWT=$${QWT}/obj.$${BUILD_TARGET}/lib/libqwt.a
+libQWT=$${QWT}/obj.$${BUILD_TARGET}/src/libqwt_debug.a
 contains(QI_LIBS, QWT) {
     INCLUDEPATH+=$${QWT_INC}
 }

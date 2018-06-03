@@ -19,7 +19,7 @@ _SUBDIRS=${SUBDIRS} ${SUBDIRS-${BUILD_HOST}} ${SUBDIRS-${BUILD_TARGET}}
 #$(info BUILD_HOST is ${BUILD_HOST})
 
 all clean install objdirs:
-	$(foreach d, ${_SUBDIRS}, echo Building ${d} && $(MAKE) -C ${d} -I ${QMK}/mk -f ${QMK}/make.qmk $@ &&) echo ok
+	$(foreach d, ${_SUBDIRS}, echo Building ${d} && $(MAKE) -C ${d} -I ${QMK} -f ${QMK}/make.qmk QMK=${QMK} $@ &&) echo ok
 
 export:
-	$(foreach d, ${EXPORTS-${OEM}}, echo Exporting ${d} for ${OEM} && $(MAKE) -C ${d} -I ${QMK}/mk QMK=${_QMK} PREFIX=${PREFIX-${OEM}} install &&) echo ok
+	$(foreach d, ${EXPORTS-${OEM}}, echo Exporting ${d} for ${OEM} && $(MAKE) -C ${d} -I ${QMK} QMK=${QMK} PREFIX=${PREFIX-${OEM}} install &&) echo ok

@@ -6,6 +6,8 @@
 ## Makefile to build something
 ##
 
+MAGICK_CONVERT=convert
+
 IMAGES= $(foreach sz,${icon_sz},icon_${sz}x${sz}.png icon_${sz}x${sz}@2x.png)
 
 ICON?=${APP}-icon
@@ -23,10 +25,10 @@ all: ${ICNS} ${ICO} ${ARTWORK_PNG}
 
 define IconRule
 ${ICONSET}/icon_${1}x${1}.png: ${ICON_PNG}
-	convert ${ICON_PNG} -scale ${1}x${1} ${ICONSET}/icon_${1}x${1}.png
+	${MAGICK_CONVERT} ${ICON_PNG} -scale ${1}x${1} ${ICONSET}/icon_${1}x${1}.png
 
 ${ICONSET}/icon_${1}x${1}@2x.png: ${ICON_PNG}
-	convert ${ICON_PNG} -scale $$$$((${1}*2))x$$$$((${1}*2)) ${ICONSET}/icon_${1}x${1}@2x.png
+	${MAGICK_CONVERT} ${ICON_PNG} -scale $$$$((${1}*2))x$$$$((${1}*2)) ${ICONSET}/icon_${1}x${1}@2x.png
 endef
 
 $(foreach sz,${icon_sz},$(eval $(call IconRule,${sz})))
@@ -41,11 +43,12 @@ ${ICNS}: ${ICONSET} ${ICON_FILES}
 .SUFFIXES: .png .ico .xcf
 
 .png.ico:
-	convert $< -alpha off -resize 256x256 -define icon:auto-resize="256,128,96,64,48,32,16" $@
+	${MAGICK_CONVERT} $< -alpha off -resize 256x256 -define icon:auto-resize="256,128,96,64,48,32,16" $@
 
 .xcf.png:
-	convert $< -background transparent -layers flatten $@
+	${MAGICK_CONVERT} $< -background transparent -layers flatten $@
 
 clean:
 	rm -rf ${ICONSET} ${ICO} ${ICNS} ${ICON_PNG} ${ARTWORK_PNG}
 
+VPATH=${CURDIR}/..

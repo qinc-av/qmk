@@ -79,6 +79,9 @@ CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 %.o : %.cc
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
 
+%.o : %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $<
+
 ifeq (${NO_DEPS},)
 -include ${DEPFILES}
 endif

@@ -19,8 +19,8 @@ all: ${CURDIR}/Makefile
 
 ARTWORK=$(wildcard ${SRCDIR}/Artwork)
 ifneq (${ARTWORK},)
-ARTWORK_ICN=${ARTWORK}/${PRO}-icon.icns
-ARTWORK_XCF=${ARTWORK}/${PRO}-icon.xcf
+ARTWORK_ICN=${ARTWORK}/obj.${BUILD_TARGET}/${PRO}-icon.icns
+ARTWORK_XCF=${ARTWORK}/obj.${BUILD_TARGET}/${PRO}-icon.xcf
 endif
 
 ifneq (${QMAKESPEC},)
@@ -36,10 +36,10 @@ endif
 # QMAKEPATH looks for features in ${QMK}/mkspecs/features/*.prf
 #
 ${CURDIR}/Makefile: ${SRCDIR}/${PRO} ${ARTWORK}
-	${_BUILD_ENV} QMAKEPATH=${QMK} ${QMAKE} ${QMAKE_SPEC} ${QMAKE_OPT} ${SRCDIR}
+	${_BUILD_ENV} QMAKEPATH=${QMK} ${QMAKE} ${QMAKE_SPEC} QMK=${QMK} ${QMAKE_OPT} ${SRCDIR} 
 
 qmake::
-	${_BUILD_ENV} QMAKEPATH=${QMK} ${QMAKE} ${QMAKE_SPEC} ${QMAKE_OPT} ${SRCDIR} -recursive
+	${_BUILD_ENV} QMAKEPATH=${QMK} ${QMAKE} ${QMAKE_SPEC} QMK=${QMK} ${QMAKE_OPT} ${SRCDIR} -recursive
 
 ifneq (${ARTWORK},)
 ${ARTWORK_ICN}: ${ARTWORK_XCF}
