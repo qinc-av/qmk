@@ -13,6 +13,7 @@ BUILD_HOST=$(shell uname)
 endif
 
 CXX_STD?=-std=c++11
+C_STD?=-std=c99
 
 ifdef RELEASE
 OPTDBG?=-O3
