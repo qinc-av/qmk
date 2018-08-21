@@ -31,14 +31,22 @@ libSixGIo=$(HOME)/work/QInc/Murideo/libSixGIo/obj.$${BUILD_TARGET}/libSixGIo.a
 
 QWT3D=$${QCORE}/contrib/qwtplot3d
 QWT3D_INC=$${QWT3D}
-libQWT3D=$${QWT3D}/obj.$${BUILD_TARGET}/src/libqwtplot3d.a
-contains(QI_LIBS, QWT3D) {
-    INCLUDEPATH+=$${QWT3D_INC}
-}
+#libQWT3D=$${QWT3D}/obj.$${BUILD_TARGET}/src/libqwtplot3d.a
 
 QWT=$${QCORE}/contrib/qwt
 QWT_INC=$${QWT}/src
+macx {
 libQWT=$${QWT}/obj.$${BUILD_TARGET}/src/libqwt_debug.a
+libQWT3D=$${QWT3D}/obj.$${BUILD_TARGET}/src/libqwtplot3d.a
+}
+win32 {
+libQWT=$${QWT}/obj.$${BUILD_TARGET}/src/libqwt.a
+libQWT3D=$${QWT3D}/obj.$${BUILD_TARGET}/src/release/libqwtplot3d.a
+}
+
+contains(QI_LIBS, QWT3D) {
+    INCLUDEPATH+=$${QWT3D_INC}
+}
 contains(QI_LIBS, QWT) {
     INCLUDEPATH+=$${QWT_INC}
 }

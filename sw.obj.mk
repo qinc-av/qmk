@@ -18,6 +18,18 @@ ifeq (Linux-,$(findstring Linux-,${BUILD_TARGET}))
 SRCS+=${SRCS-Linux}
 endif
 
+#
+# API files
+ifneq ($(filter API-%,${.VARIABLES}),)
+$(info API:: $(filter API-%,${.VARIABLES}))
+API_DIR?=.
+include sw.api.mk
+
+CLEANFILES+=${API_SRCS}
+endif
+
+#
+# protobuf files
 ifneq (${PROTO},)
 PROTO_GENSRC=$(patsubst %,%.pb.c,${PROTO})
 PROTO_GENHDR=$(patsubst %,%.pb.h,${PROTO})
@@ -25,7 +37,11 @@ CLEANFILES+=${PROTO_GENSRC} ${PROTO_GENHDR} $(patsubst %,%.pb,${PROTO})
 endif
 
 OBJS=$(patsubst %,%.pb.o,${PROTO})
-OBJS+=$(patsubst %,%.o,$(basename $(notdir $(filter-out %.api,${SRCS}))))
+OBJS+=$(patsubst %,%.o,$(basename $(notdir ${SRCS})))
+ifneq (${API_SRCS},)
+${OBJS}: ${API_SRCS}
+OBJS+=$(patsubst %,%.o,$(basename $(notdir $(filter %.cpp,${API_SRCS}))))
+endif
 ifneq (${QMK_DEBUG},)
 $(info SRCDIR is ${SRCDIR})
 $(info SRCS are ${SRCS})
@@ -66,12 +82,6 @@ CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 
 %.pb.h %.pb.c : %.pb
 	${NANOPB_GENERATOR} ${NANOPB_FLAGS} $<
-
-%_civet.h : %.api
-	${APIGEN} -i server-civet-h $<
-
-%_api.js: %.api ${HTDOCS_JS_DIR}
-	${APIGEN} -i js -d ${HTDOCS_JS_DIR} $<
 
 %.o : %.cxx
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
