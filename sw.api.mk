@@ -10,8 +10,6 @@
 
 # API-cgi-fw += 
 # API-cgi-fw-h += 
-# API-civet-server += 
-# API-civet-server-h += 
 # API-js += 
 # API-jsio-server += 
 # API-json-schema += 
@@ -22,13 +20,13 @@
 # API-serial-host += 
 # API-usb-fw += 
 # API-usb-host += 
+# API-uxcgi-server += 
+# API-uxcgi-server-h += 
 
-API_GENERATORS := cgi-fw cgi-fw-h civet-server civet-server-h js jsio-server json-schema rest-host-cpp rest-host-h rest-host-ih serial-fw serial-host usb-fw usb-host
+API_GENERATORS := cgi-fw cgi-fw-h js jsio-server json-schema rest-host-cpp rest-host-h rest-host-ih serial-fw serial-host usb-fw usb-host uxcgi-server uxcgi-server-h
 
 API_SUFFIX-cgi-fw := _fcgi.cpp
 API_SUFFIX-cgi-fw-h := _fcgi.h
-API_SUFFIX-civet-server := _civet.cpp
-API_SUFFIX-civet-server-h := _civet.h
 API_SUFFIX-js := _api.js
 API_SUFFIX-jsio-server := _jsio-server.cpp
 API_SUFFIX-json-schema := .schema.json
@@ -39,6 +37,8 @@ API_SUFFIX-serial-fw := _serial-fw.cpp
 API_SUFFIX-serial-host := _serial-host.cpp
 API_SUFFIX-usb-fw := _usb-fw.cpp
 API_SUFFIX-usb-host := _usb-host.cpp
+API_SUFFIX-uxcgi-server := _uxcgi.cpp
+API_SUFFIX-uxcgi-server-h := _uxcgi.h
 
 $(foreach g,${API_GENERATORS},\
 	$(if ${API-${g}},\
@@ -52,12 +52,6 @@ ${API_DIR}/%_fcgi.cpp : %.api
 
 ${API_DIR}/%_fcgi.h : %.api
 	 ${APIGEN} -d ${API_DIR} -i cgi-fw-h $<
-
-${API_DIR}/%_civet.cpp : %.api
-	 ${APIGEN} -d ${API_DIR} -i civet-server $<
-
-${API_DIR}/%_civet.h : %.api
-	 ${APIGEN} -d ${API_DIR} -i civet-server-h $<
 
 ${API_DIR}/%_api.js : %.api
 	 ${APIGEN} -d ${API_DIR} -i js $<
@@ -88,4 +82,10 @@ ${API_DIR}/%_usb-fw.cpp : %.api
 
 ${API_DIR}/%_usb-host.cpp : %.api
 	 ${APIGEN} -d ${API_DIR} -i usb-host $<
+
+${API_DIR}/%_uxcgi.cpp : %.api
+	 ${APIGEN} -d ${API_DIR} -i uxcgi-server $<
+
+${API_DIR}/%_uxcgi.h : %.api
+	 ${APIGEN} -d ${API_DIR} -i uxcgi-server-h $<
 

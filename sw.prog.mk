@@ -12,6 +12,8 @@ endif
 
 include ${QMK}/arch.mk
 
+include ${QMK}/sw.obj.mk
+
 #
 # HTDOC handling
 ifneq (${HTDOCS},)
@@ -24,8 +26,6 @@ BUILD_DEPENDS+=${HTDOCS_DIRS} ${HTDOCS_FILES} ${CIVET_H_API} fsdata.h
 HTDOCS_FILES+=${JS_API}
 
 endif
-
-include ${QMK}/sw.obj.mk
 
 # find all the software libraries:
 define findlibs
