@@ -12,6 +12,7 @@
 # API-cgi-fw-h += 
 # API-js += 
 # API-jsio-server += 
+# API-jsio-server-h += 
 # API-json-schema += 
 # API-rest-host-cpp += 
 # API-rest-host-h += 
@@ -23,12 +24,13 @@
 # API-uxcgi-server += 
 # API-uxcgi-server-h += 
 
-API_GENERATORS := cgi-fw cgi-fw-h js jsio-server json-schema rest-host-cpp rest-host-h rest-host-ih serial-fw serial-host usb-fw usb-host uxcgi-server uxcgi-server-h
+API_GENERATORS := cgi-fw cgi-fw-h js jsio-server jsio-server-h json-schema rest-host-cpp rest-host-h rest-host-ih serial-fw serial-host usb-fw usb-host uxcgi-server uxcgi-server-h
 
 API_SUFFIX-cgi-fw := _fcgi.cpp
 API_SUFFIX-cgi-fw-h := _fcgi.h
 API_SUFFIX-js := _api.js
 API_SUFFIX-jsio-server := _jsio-server.cpp
+API_SUFFIX-jsio-server-h := _jsio-server.h
 API_SUFFIX-json-schema := .schema.json
 API_SUFFIX-rest-host-cpp := _rest.cpp
 API_SUFFIX-rest-host-h := _rest.h
@@ -58,6 +60,9 @@ ${API_DIR}/%_api.js : %.api
 
 ${API_DIR}/%_jsio-server.cpp : %.api
 	 ${APIGEN} -d ${API_DIR} -i jsio-server $<
+
+${API_DIR}/%_jsio-server.h : %.api
+	 ${APIGEN} -d ${API_DIR} -i jsio-server-h $<
 
 ${API_DIR}/%.schema.json : %.api
 	 ${APIGEN} -d ${API_DIR} -i json-schema $<
