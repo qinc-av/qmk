@@ -21,7 +21,7 @@ isEmpty(UKKO) UKKO=$$(HOME)/work/QInc/Ukko
 isEmpty(AVPGH) AVPGH=$$(HOME)/work/QInc/AVProGH
 isEmpty(QCORE) QCORE=$$(HOME)/work/QInc/QCore
 
-INCLUDEPATH += $${QCORE}/software/libs
+INCLUDEPATH += $${QCORE}/software/libs $${UKKO}/software $${UKKO}/firmware/libs
 LIB_P+=$${QCORE}/software/libs $${QCORE}/contrib $${UKKO}/software $${UKKO}/firmware/libs $${UKKO}/software/contrib $${AVPGH}/software
 
 PRISMA_SDK=$${QCORE}/software/libs/prisma-sdk

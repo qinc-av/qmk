@@ -6,7 +6,7 @@
 ## Makefile to build something
 ##
 
-BUILD_TARGETS-Darwin?=Darwin Linux-arm Linux-dart Linux-rocko Linux-rpi Mingw
+BUILD_TARGETS-Darwin?=Darwin Linux-arm Linux-dart Linux-rocko Linux-rpi Linux-rpi3 Mingw
 BUILD_TARGETS-Windows?=Mingw
 BUILD_TARGETS-Linux?=Linux oe
 

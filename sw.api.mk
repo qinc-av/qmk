@@ -8,9 +8,13 @@
 ## Makefile template for api generator
 ##
 
+# API-avio-server += 
+# API-avio-server-h += 
 # API-cgi-fw += 
 # API-cgi-fw-h += 
 # API-js += 
+# API-jsio-client += 
+# API-jsio-client-h += 
 # API-jsio-server += 
 # API-jsio-server-h += 
 # API-json-schema += 
@@ -24,11 +28,15 @@
 # API-uxcgi-server += 
 # API-uxcgi-server-h += 
 
-API_GENERATORS := cgi-fw cgi-fw-h js jsio-server jsio-server-h json-schema rest-host-cpp rest-host-h rest-host-ih serial-fw serial-host usb-fw usb-host uxcgi-server uxcgi-server-h
+API_GENERATORS := avio-server avio-server-h cgi-fw cgi-fw-h js jsio-client jsio-client-h jsio-server jsio-server-h json-schema rest-host-cpp rest-host-h rest-host-ih serial-fw serial-host usb-fw usb-host uxcgi-server uxcgi-server-h
 
+API_SUFFIX-avio-server := _avio-server.cpp
+API_SUFFIX-avio-server-h := _avio-server.h
 API_SUFFIX-cgi-fw := _fcgi.cpp
 API_SUFFIX-cgi-fw-h := _fcgi.h
 API_SUFFIX-js := _api.js
+API_SUFFIX-jsio-client := _jsio-client.cpp
+API_SUFFIX-jsio-client-h := _jsio-client.h
 API_SUFFIX-jsio-server := _jsio-server.cpp
 API_SUFFIX-jsio-server-h := _jsio-server.h
 API_SUFFIX-json-schema := .schema.json
@@ -49,6 +57,12 @@ $(foreach g,${API_GENERATORS},\
 
 $(info API_SRCS:: ${API_SRCS})
 
+${API_DIR}/%_avio-server.cpp : %.api
+	 ${APIGEN} -d ${API_DIR} -i avio-server $<
+
+${API_DIR}/%_avio-server.h : %.api
+	 ${APIGEN} -d ${API_DIR} -i avio-server-h $<
+
 ${API_DIR}/%_fcgi.cpp : %.api
 	 ${APIGEN} -d ${API_DIR} -i cgi-fw $<
 
@@ -57,6 +71,12 @@ ${API_DIR}/%_fcgi.h : %.api
 
 ${API_DIR}/%_api.js : %.api
 	 ${APIGEN} -d ${API_DIR} -i js $<
+
+${API_DIR}/%_jsio-client.cpp : %.api
+	 ${APIGEN} -d ${API_DIR} -i jsio-client $<
+
+${API_DIR}/%_jsio-client.h : %.api
+	 ${APIGEN} -d ${API_DIR} -i jsio-client-h $<
 
 ${API_DIR}/%_jsio-server.cpp : %.api
 	 ${APIGEN} -d ${API_DIR} -i jsio-server $<
