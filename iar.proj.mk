@@ -18,6 +18,7 @@ IARBUILD?=c:/Program Files (x86)/IAR Systems/Embedded Workbench 7.5/common/bin/I
 ifeq ($(shell uname),Darwin)
 MAKEFSDATA = cd htdocs_min; perl ${CURDIR}/../../../libs/lwip/apps/libHttpServer/makefsdata/makefsdata
 JAVA=java
+CP_R=cp -r
 CP=cp
 RM_RF=rm -rf
 RM=rm
@@ -28,7 +29,8 @@ MAKEFSDATA = ${CURDIR}/../../../../software/contrib/makefsdata/obj.Mingw/makefsd
 JAVA="c:/Program Files/Java/jre7/bin/java.exe"
 JAVA="C:/Program Files/Java/jre1.8.0_31/bin/java.exe"
 JAVA=java.exe
-CP=robocopy
+CP_R=robocopy
+CP=copy /b
 FixPath = $(subst /,\,$1)
 RM_RF=rmdir /s /q
 RM=del
@@ -79,7 +81,7 @@ endef
 #define FileIterator1
 #$(foreach f, $(wildcard htdocs/${1}), ${2} $(patsubst htdocs%,${CURDIR}/htdocs_min%,${f}) ${CURDIR}/${f} &&) echo ${3} done
 #endef
-#	${CP} $(call FixPath, ${CURDIR}/htdocs/js/zepto.min.js) $(call FixPath,${CURDIR}/htdocs_min/js/)
+#	${CP_R} $(call FixPath, ${CURDIR}/htdocs/js/zepto.min.js) $(call FixPath,${CURDIR}/htdocs_min/js/)
 
 API_LIB_PATH+=${CURDIR}/../../libs ${CURDIR}/../../../libs
 API_FILES=$(foreach a, ${API_LIST}, $(wildcard $(patsubst %,%/lib${a}/${a}.api,${API_LIB_PATH})))
@@ -98,7 +100,7 @@ fsdata: jsapi
 	mkdir htdocs_min\\css
 	mkdir htdocs_min\\js
 	mkdir htdocs_min\\images
-	${CP} htdocs\\images htdocs_min\\images /S || echo WTF, ok
+	${CP_R} htdocs\\images htdocs_min\\images /S || echo WTF, ok
 	$(call FileIterator,css/*.css,${YUI_COMP} --type css -o,css)
 	$(call FileIterator,*.html,${HTML_COMP} --compress-css -t html -o,html)
 	$(call FileIterator,js/*.js,${CLOSURE_COMP} --js_output_file,js)
