@@ -123,8 +123,8 @@ copy-to-server: GITV=$(shell git describe --always --dirty)
 
 copy-to-server: 
 ifneq (${DIST_DIR},)
-	echo copy "obj.app/Exe/${APP}-${GITV}.mcu" "${DIST_DIR}\${DIST_SUBDIR}\"
-	echo copy "obj.boot/Exe/${APP}_boot.hex" "${DIST_DIR}\${DIST_SUBDIR}\${APP}_boot-${GITV}.hex"
+	${CP} "obj.app/Exe/${APP}-${GITV}.mcu" "${DIST_DIR}\${DIST_SUBDIR}\"
+	${CP} "obj.boot/Exe/${APP}_boot.hex" "${DIST_DIR}\${DIST_SUBDIR}\${APP}_boot-${GITV}.hex"
 else
 	@echo nothing to copy
 endif
