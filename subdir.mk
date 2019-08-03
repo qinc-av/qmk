@@ -18,7 +18,7 @@ _SUBDIRS=${SUBDIRS} ${SUBDIRS-${BUILD_HOST}} ${SUBDIRS-${BUILD_TARGET}}
 #$(info BUILD_TARGET is ${BUILD_TARGET})
 #$(info BUILD_HOST is ${BUILD_HOST})
 
-all clean install objdirs:
+all clean install objdirs copy-to-server:
 	$(foreach d, ${_SUBDIRS}, echo Building ${d} && $(MAKE) -C ${d} -I ${QMK} -f ${QMK}/make.qmk QMK=${QMK} $@ &&) echo ok
 
 export:
