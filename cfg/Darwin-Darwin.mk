@@ -12,8 +12,18 @@ CROSS=
 EXE=
 ARCH-Darwin?=-arch x86_64
 ARCH_FLAGS?=-mmacosx-version-min=10.13
-QMAKE?=${HOME}/Qt/5.9.1/clang_64/bin/qmake
+QMAKE?=${HOME}/Qt/5.12.5/clang_64/bin/qmake
 
+CC=/usr/bin/gcc ${ARCH_FLAGS}
+CXX=/usr/bin/c++ ${ARCH_FLAGS}
+LD=/usr/bin/ld
+AR=/usr/bin/ar
+RANLIB=/usr/bin/ranlib
+AS=/usr/bin/as
+PKG_CONFIG=pkg-config
+STRIP=/usr/bin/strip
+
+TOOLCHAIN_OK=y
 # 
 # Local Variables:
 # mode: Makefile

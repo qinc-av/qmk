@@ -63,7 +63,10 @@ LDFLAGS+=-static
 endif # BUILD_HOSTS
 
 ifeq ($(wildcard ${QMK}/cfg/${BUILD_HOST}-${BUILD_TARGET}.mk),)
+ifeq (${SUBDIRS},)
+# don't show warning if we are a subdir target
 $(warning unknown build config=${BUILD_HOST}-${BUILD_TARGET})
+endif
 TOOLCHAIN_OK=1
 else
 include ${QMK}/cfg/${BUILD_HOST}-${BUILD_TARGET}.mk

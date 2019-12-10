@@ -58,15 +58,10 @@ ifneq (PREFIX,)
  PREFIX_VAR=PREFIX=${PREFIX}
 endif
 
-ifeq (1,0)
-# old non-makeish way...
-all clean test cleantest release cleanrelease distro install qmake:
-	@echo building for ${BUILD_TARGETS}
-	@$(foreach t, ${BUILD_TARGETS}, \
-		${_BUILD_ENV} echo $@ Begin; echo Entering directory \'obj.${t}\' && ${MAKE} -C obj.${t} -f ${MK_PATH}/${MK} -I${_QMK} QMK=${_QMK} BUILD_TARGET=${t} BUILD_HOST=${BUILD_HOST} ${PREFIX_VAR} $@ && echo Leaving directory \'obj.${t}\' && ) echo $@ Done
-endif
-
 COMMON_RECIPES=all clean test cleantest release cleanrelease install qmake qmake_all
+
+ifneq (${BUILD_TARGETS},)
+# do this if we have build_targets
 
 define gen-common-deps
 ${1}: $(foreach t, ${BUILD_TARGETS}, ${t}-${1})
@@ -91,5 +86,14 @@ endef
 
 $(foreach t, ${BUILD_TARGETS}, $(foreach r, ${COMMON_RECIPES}, $(eval $(call gen-rules,${t},${r}) ) ) )
 
+else
+# no build targets... try for subdirs
+
+${COMMON_RECIPES}:
+	@${MAKE} -f ${MK_PATH}/${MK} -I${_QMK} -I${CURDIR} QMK=${_QMK} $@ BUILD_HOST=${BUILD_HOST} ${_DESTDIR_VAR}
+
+endif
+
 objdirs:
 	mkdir -p $(patsubst %,obj.%,${_BUILD_TARGETS})
+
