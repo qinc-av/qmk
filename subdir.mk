@@ -14,8 +14,8 @@ include ${QMK}/arch.mk
 
 _SUBDIRS=${SUBDIRS} ${SUBDIRS-${BUILD_HOST}} ${SUBDIRS-${BUILD_TARGET}}
 
-all clean install objdirs:
-	@$(foreach d, ${_SUBDIRS}, echo Building $@ in ${d} && $(MAKE) -C ${d} -I ${QMK} -f ${QMK}/make.qmk QMK=${QMK} $@ &&) echo ok
+all clean install objdirs copy-to-server:
+	$(foreach d, ${_SUBDIRS}, echo Building ${d} && $(MAKE) -C ${d} -I ${QMK} -f ${QMK}/make.qmk QMK=${QMK} $@ &&) echo ok
 
 export:
 	$(foreach d, ${EXPORTS-${OEM}}, echo Exporting ${d} for ${OEM} && $(MAKE) -C ${d} -I ${QMK} QMK=${QMK} PREFIX=${PREFIX-${OEM}} install &&) echo ok
