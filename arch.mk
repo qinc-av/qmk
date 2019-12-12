@@ -13,6 +13,7 @@ BUILD_HOST=$(shell uname)
 endif
 
 CXX_STD?=-std=c++11
+C_STD?=-std=c99
 
 ifdef RELEASE
 OPTDBG?=-O3
@@ -38,14 +39,17 @@ NANOPB_FLAGS=-L "\#include <libnanopb/%s>"
 APIGEN?=${UKKO}/software/apigen/obj.Darwin/apigen
 CIVETFS?=${UKKO}/software/civetfs/obj.Darwin/civetfs
 
-RM=rm -f
+VERILATOR=verilator
+
+RM=rm -rf
+MKDIR=mkdir -p
+CP=cp
 
 else ifeq (${BUILD_HOST},Windows)
-
-QCORE?=${USERPROFILE}/Documents/QInc/QCore
-UKKO?=${USERPROFILE}/Documents/QInc/Ukko
-AVPGH?=${USERPROFILE}/Documents/QInc/AVProGH
-CONTRIB?=${QCORE}/contrib
+QCORE?=${USERPROFILE}\Documents\QInc\Projects\QCore
+UKKO?=${USERPROFILE}\Documents\QInc\Projects\Ukko
+AVPGH?=${USERPROFILE}\Documents\QInc\Projects\AVProGH
+CONTRIB?=${QCORE}\contrib
 
 ifdef WIN_XP
 ARCH-Mingw?=-m32 -DWIN_XP
@@ -59,7 +63,10 @@ LDFLAGS+=-static
 endif # BUILD_HOSTS
 
 ifeq ($(wildcard ${QMK}/cfg/${BUILD_HOST}-${BUILD_TARGET}.mk),)
+ifeq (${SUBDIRS},)
+# don't show warning if we are a subdir target
 $(warning unknown build config=${BUILD_HOST}-${BUILD_TARGET})
+endif
 TOOLCHAIN_OK=1
 else
 include ${QMK}/cfg/${BUILD_HOST}-${BUILD_TARGET}.mk
