@@ -25,9 +25,8 @@ MK_PATH=${CURDIR}
 
 ifeq (${MK},)
   MK=$(notdir ${CURDIR}).mk
+  PRO?=$(notdir ${CURDIR}).pro
 endif
-
-PRO?=$(notdir ${CURDIR}).pro
 
 objects := 
 

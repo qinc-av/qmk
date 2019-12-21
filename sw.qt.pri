@@ -36,7 +36,7 @@ QWT3D_INC=$${QWT3D}
 QWT=$${QCORE}/contrib/qwt
 QWT_INC=$${QWT}/src
 macx {
-libQWT=$${QWT}/obj.$${BUILD_TARGET}/src/libqwt_debug.a
+libQWT=$${QWT}/obj.$${BUILD_TARGET}/src/libqwt.a
 libQWT3D=$${QWT3D}/obj.$${BUILD_TARGET}/src/libqwtplot3d.a
 }
 win32 {

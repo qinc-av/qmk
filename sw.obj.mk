@@ -65,6 +65,8 @@ $(info includes ${INCLUDES})
 $(info VPATH is ${VPATH})
 endif
 
+.SUFFIXES: .m .mm
+
 ifeq (${NO_DEPS},)
 DEPFLAGS?=-MT $@ -MMD -MP -MF $*.Td
 DEPFILES=$(patsubst %,%.Td,$(basename $(notdir ${SRCS})))
@@ -91,6 +93,12 @@ CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 
 %.o : %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $<
+
+%.o : %.m
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $<
+
+%.o : %.mm
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
 
 ifeq (${NO_DEPS},)
 -include ${DEPFILES}
