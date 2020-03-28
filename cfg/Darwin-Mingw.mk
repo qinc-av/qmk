@@ -11,7 +11,25 @@
 ifdef WIN_XP
 ARCH-Mingw=-m32 -DWIN_XP
 endif
-CROSS=i686-w64-mingw32.static-
+
+MXE_BIN?=/Volumes/CSData/Development/github/mxe/usr/bin
+
+ifneq (${MXE_BIN},$(findstring ${MXE_BIN},${PATH}))
+$(info no mxe bin)
+export PATH:=${PATH}:${MXE_BIN}
+endif
+
+#i686-w64-mingw32.static
+#i686-w64-mingw32.shared
+#x86_64-w64-mingw32.shared
+#x86_64-w64-mingw32.static
+#i686-w64-mingw32.static.posix
+#i686-w64-mingw32.shared.posix
+#x86_64-w64-mingw32.shared.posix
+#x86_64-w64-mingw32.static.posix
+
+CROSS:=$(if ${MXE_CROSS},${MXE_CROSS},i686-w64-mingw32.shared.posix)-
+
 EXE=.exe
 QMAKE=${CROSS}qmake-qt5
 QMAKE_SPEC=

@@ -51,7 +51,7 @@ endif
 _SRC_DIRS=$(sort $(foreach s,${SRCS},$(dir ${s})))
 VPATH+=$(patsubst %,${SRCDIR}/%,${_SRC_DIRS})
 
-ifeq (${NO_Q_INCLUDES},)
+ifneq (${QCORE_INCLUDES},)
 INCLUDES+=${QCORE}/software/libs ${QCORE}/contrib ${UKKO_SW} ${UKKO_FW} ${UKKO_CONTRIB}
 endif
 
@@ -85,6 +85,45 @@ CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 %.pb.h %.pb.c : %.pb
 	${NANOPB_GENERATOR} ${NANOPB_FLAGS} $<
 
+ifneq (${apple-multi-arch},)
+
+define newline
+
+
+endef
+
+%.o : %.c
+%.o : %.m
+%.o : %.cpp
+%.o : %.cc
+%.o : %.mm
+
+define cpp-rule
+%.o : %.${1}
+	echo build $$@ from $$^$(foreach a,${apple-multi-arch},${newline}	${CXX-${a}} ${ARCH-${a}} $${CXXFLAGS} -c -o $$<.${a}.o $$<)
+	lipo -create -output $$@ $(foreach a,${apple-multi-arch},$$<.${a}.o)
+	rm $(foreach a,${apple-multi-arch},$$<.${a}.o)
+endef
+
+define cc-rule
+%.o : %.${1}
+	echo build $$@ from $$^$(foreach a,${apple-multi-arch},${newline}	${CC-${a}} ${ARCH-${a}} $${CFLAGS} -c -o $$<.${a}.o $$<)
+	lipo -create -output $$@ $(foreach a,${apple-multi-arch},$$<.${a}.o)
+	rm $(foreach a,${apple-multi-arch},$$<.${a}.o)
+endef
+
+#$(info $(call cpp-rule,cpp))
+#$(info $(call cpp-rule,cc))
+#$(info $(call cpp-rule,mm))
+
+$(eval $(call cpp-rule,cpp))
+$(eval $(call cpp-rule,cc))
+$(eval $(call cpp-rule,mm))
+
+$(eval $(call cc-rule,c))
+$(eval $(call cc-rule,m))
+
+else
 %.o : %.cxx
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
 
@@ -99,9 +138,42 @@ CXXFLAGS+=${CXXFLAGS-${BUILD_TARGET}}
 
 %.o : %.mm
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
+endif
 
 ifeq (${NO_DEPS},)
 -include ${DEPFILES}
+endif
+
+#
+# HTDOC handling
+ifneq (${HTDOCS},)
+HTDOCS_DIRS=$(sort $(foreach p,${HTDOCS},${CURDIR}/$(dir ${p})))
+HTDOCS_FILES=$(sort $(foreach p,${HTDOCS},${CURDIR}/${p}))
+HTDOCS_TOP=$(firstword ${HTDOCS_DIRS})
+HTDOCS_JS_DIR?=${HTDOCS_TOP}js
+
+BUILD_DEPENDS+=${HTDOCS_DIRS} ${HTDOCS_FILES} ${CIVET_H_API} fsdata.h
+HTDOCS_FILES+=${JS_API}
+
+endif
+
+ifneq (${HTDOCS},)
+
+${HTDOCS_DIRS}:
+	${MKDIR} $@
+
+define copy-rule
+${2}/${1}: ${SRCDIR}/${1}
+	${CP} ${SRCDIR}/${1} ${2}/${1}
+endef
+
+$(foreach p,${HTDOCS},$(eval $(call copy-rule,${p},${CURDIR})))
+
+fsdata.h: ${HTDOCS_FILES} ${API_JS_FILES}
+	${CIVETFS} ${HTDOCS_TOP:${CURDIR}/%=%} >$@
+
+CLEANFILES+=fsdata.h ${HTDOCS_DIRS}
+
 endif
 
 #

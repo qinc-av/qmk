@@ -6,7 +6,7 @@
 ## Makefile to build something
 ##
 
-BUILD_TARGETS-Darwin?=Darwin Linux-arm Linux-dart Linux-rocko Linux-rpi Linux-rpi3 Mingw
+BUILD_TARGETS-Darwin?=Darwin Linux-arm Linux-dart Linux-rocko Linux-rpi Linux-rpi3 Mingw iOS tvOS
 BUILD_TARGETS-Windows?=Mingw
 BUILD_TARGETS-Linux?=Linux oe
 
@@ -47,14 +47,24 @@ BUILD_TARGETS?=$(patsubst obj.%/.,%,$(foreach t, ${_BUILD_TARGETS}, $(wildcard o
 
 ifneq ($(wildcard ${PRO}),)
 $(info using qmake: ${PRO})
-MK=sw.qt.mk PRO=${PRO}
+MK=sw.qt.mk
+MK_ARGS=PRO=${PRO}
 MK_PATH=${_QMK}
 else ifneq ($(wildcard ${MK}),)
 $(info using gnumake: ${MK_PATH}/${MK})
+MK_ARGS=
 endif
 
 ifneq (PREFIX,)
  PREFIX_VAR=PREFIX=${PREFIX}
+endif
+
+project_config:=${CURDIR}/../project-config.mk
+ifneq ($(wildcard ${project_config}),)
+$(info found ${project_config})
+_PROJECT_CONFIG:=-f "${project_config}"
+else
+$(info no found ${project_config})
 endif
 
 COMMON_RECIPES=all clean test cleantest release cleanrelease install qmake qmake_all
@@ -79,7 +89,7 @@ source=.
 define gen-rules
 ${1}-${2}:
 	@echo Entering directory \'obj.${1}\'
-	@$(if ${${BUILD_HOST}-${1}-env},${source} ${${BUILD_HOST}-${1}-env};,) ${MAKE} -C obj.${1} -f ${MK_PATH}/${MK} -I${_QMK} -I${CURDIR} QMK=${_QMK} BUILD_TARGET=${1} BUILD_HOST=${BUILD_HOST} ${_DESTDIR_VAR} ${2}
+	@$(if ${${BUILD_HOST}-${1}-env},${source} ${${BUILD_HOST}-${1}-env};,) ${MAKE} -C obj.${1} ${_PROJECT_CONFIG} -f "${MK_PATH}/${MK}" ${MK_ARGS} -I${_QMK} -I"${CURDIR}" -I"${CURDIR}/.." QMK=${_QMK} BUILD_TARGET=${1} BUILD_HOST=${BUILD_HOST} ${_DESTDIR_VAR} ${2}
 	echo Leaving directory \'obj.${1}\'
 endef
 

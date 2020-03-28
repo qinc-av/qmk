@@ -14,19 +14,6 @@ include ${QMK}/arch.mk
 
 include ${QMK}/sw.obj.mk
 
-#
-# HTDOC handling
-ifneq (${HTDOCS},)
-HTDOCS_DIRS=$(sort $(foreach p,${HTDOCS},${CURDIR}/$(dir ${p})))
-HTDOCS_FILES=$(sort $(foreach p,${HTDOCS},${CURDIR}/${p}))
-HTDOCS_TOP=$(firstword ${HTDOCS_DIRS})
-HTDOCS_JS_DIR?=${HTDOCS_TOP}js
-
-BUILD_DEPENDS+=${HTDOCS_DIRS} ${HTDOCS_FILES} ${CIVET_H_API} fsdata.h
-HTDOCS_FILES+=${JS_API}
-
-endif
-
 # find all the software libraries:
 define findlibs
   $(foreach l,$(patsubst lib%,%,$(notdir $(wildcard ${1}/lib*))),$(eval lib_${l}?=${1}/lib${l}/obj.${BUILD_TARGET}/lib${l}.a))
@@ -59,7 +46,7 @@ lib_httpclient-Mingw=-lws2_32
 lib_curlpp-Darwin=${lib_curl}
 lib_curlpp-Mingw=${lib_curl}
 
-lib_ColorAnalyzer-Darwin=-F ${QCORE}/software/libs/libColorAnalyzer/Frameworks -framework SipFrame -framework i1d3SDK
+lib_ColorAnalyzer-Darwin=-F ${QCORE}/software/libs/libColorAnalyzer/Frameworks -framework i1d3SDK
 lib_ColorAnalyzer-Mingw =${QCORE}/software/libs/libColorAnalyzer/XRite/Win32/i386/SipCal.lib
 lib_ColorAnalyzer-Mingw+=${QCORE}/software/libs/libColorAnalyzer/XRite/Win32/i386/i1d3SDK.lib
 
@@ -93,6 +80,10 @@ lib_PRISMA=${QCORE}/software/libs/prisma-sdk/obj.${BUILD_TARGET}/libprisma.a
 
 all: ${PROG}${EXE}
 
+#$(info CXX_POST_LINK-${BUILD_TARGET} is ${CXX_POST_LINK-${BUILD_TARGET}})
+CXX_POST_LINK:=$(if ${CXX_POST_LINK-${BUILD_TARGET}},${CXX_POST_LINK-${BUILD_TARGET}},${CXX_POST_LINK})
+#$(info CXX_POST_LINK= ${CXX_POST_LINK})
+
 ifneq (${VMOD},)
 # verilator simulation
   VDIR=vobj
@@ -100,6 +91,7 @@ ifneq (${VMOD},)
 
   ABS_SRCS=$(patsubst %,${SRCDIR}/%,${SRCS})
   CLEANFILES+=${VDIR}/*
+
 
 ${PROG}${EXE}: ${OBJDIR}/${VDIR}/${V_MK}
 	${MAKE} -C ${VDIR} -f V${VMOD}.mk
@@ -110,6 +102,7 @@ ${OBJDIR}/${VDIR}/${V_MK}: ${VSRC} ${SRCS}
 else
 ${PROG}${EXE}: ${BUILD_DEPENDS} ${OBJS} ${_LIBS}
 	${CXX} -o $@ ${OBJS} ${LDFLAGS} ${LDADD-${BUILD_TARGET}} ${LDADD}
+	${CXX_POST_LINK}
 endif
 
 clean:
@@ -127,21 +120,3 @@ install: ${PROG}${EXE}
 	@echo install program: ${BINDIR}/${PROG}${EXE}
 	@install ${PROG}${EXE} ${BINDIR}
 
-ifneq (${HTDOCS},)
-
-${HTDOCS_DIRS}:
-	${MKDIR} $@
-
-define copy-rule
-${2}/${1}: ${SRCDIR}/${1}
-	${CP} ${SRCDIR}/${1} ${2}/${1}
-endef
-
-$(foreach p,${HTDOCS},$(eval $(call copy-rule,${p},${CURDIR})))
-
-fsdata.h: ${HTDOCS_FILES} ${API_JS_FILES}
-	${CIVETFS} ${HTDOCS_TOP:${CURDIR}/%=%} >$@
-
-CLEANFILES+=fsdata.h ${HTDOCS_DIRS}
-
-endif
