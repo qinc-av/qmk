@@ -11,9 +11,9 @@
 
 apple-multi-arch=appletvos appletvsimulator
 
-ARCH-appletvos=-arch arm64
+ARCH-appletvos=-arch arm64 -mtvos-version-min=13 -fembed-bitcode
 CC-appletvos=xcrun --sdk appletvos clang ${ARCH-appletvos}
-CXX-appletvos=xcrun --sdk iphoneos clang++ ${ARCH-appletvos}
+CXX-appletvos=xcrun --sdk appletvos clang++ ${ARCH-appletvos}
 ARCH-appletvsimulator=-arch x86_64
 CC-appletvsimulator=xcrun --sdk  appletvsimulator clang ${ARCH-appletvsimulator}
 CXX-appletvsimulator=xcrun --sdk appletvsimulator clang++ ${ARCH-appletvsimulator}

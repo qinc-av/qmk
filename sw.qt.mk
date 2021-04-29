@@ -36,10 +36,10 @@ endif
 # QMAKEPATH looks for features in ${QMK}/mkspecs/features/*.prf
 #
 ${CURDIR}/Makefile: ${SRCDIR}/${PRO} ${ARTWORK}
-	${_BUILD_ENV} QMAKEPATH=${QMK} ${QMAKE} ${QMAKE_SPEC} QMK=${QMK} ${QMAKE_OPT} ${SRCDIR} 
+	${_BUILD_ENV} QMAKEPATH=${QMK} ${QMAKE} ${QMAKE_SPEC} QMK=${QMK} ${QMAKE_OPT} ${SRCDIR}/${PRO}
 
 qmake::
-	${_BUILD_ENV} QMAKEPATH=${QMK} ${QMAKE} ${QMAKE_SPEC} QMK=${QMK} ${QMAKE_OPT} ${SRCDIR} -recursive
+	${_BUILD_ENV} QMAKEPATH=${QMK} ${QMAKE} ${QMAKE_SPEC} QMK=${QMK} ${QMAKE_OPT} ${SRCDIR}/${PRO} -recursive
 
 ifneq (${ARTWORK},)
 ${ARTWORK_ICN}: ${ARTWORK_XCF}

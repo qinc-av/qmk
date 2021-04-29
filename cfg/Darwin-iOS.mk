@@ -9,8 +9,7 @@
 ##
 
 apple-multi-arch=iphoneos iphonesimulator
-
-ARCH-iphoneos=-arch arm64
+ARCH-iphoneos=-arch arm64 -miphoneos-version-min=13 -fembed-bitcode
 CC-iphoneos=xcrun --sdk iphoneos clang ${ARCH-iphoneos}
 CXX-iphoneos=xcrun --sdk iphoneos clang++ ${ARCH-iphoneos}
 ARCH-iphonesimulator=-arch x86_64

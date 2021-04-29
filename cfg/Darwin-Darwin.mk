@@ -10,7 +10,7 @@
 
 CROSS=
 EXE=
-ARCH-Darwin?=-arch x86_64
+ARCH-Darwin?=-arch x86_64 -arch arm64
 ARCH_FLAGS?=-mmacosx-version-min=10.12
 QMAKE?=${HOME}/Qt/5.14.1/clang_64/bin/qmake
 

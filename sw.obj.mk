@@ -170,7 +170,7 @@ endef
 $(foreach p,${HTDOCS},$(eval $(call copy-rule,${p},${CURDIR})))
 
 fsdata.h: ${HTDOCS_FILES} ${API_JS_FILES}
-	${CIVETFS} ${HTDOCS_TOP:${CURDIR}/%=%} >$@
+	${CIVETFS} ${HTDOCS_TOP:${CURDIR}/%/=%} >$@
 
 CLEANFILES+=fsdata.h ${HTDOCS_DIRS}
 
