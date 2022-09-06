@@ -28,7 +28,7 @@
 # API-uxcgi-server += 
 # API-uxcgi-server-h += 
 
-API_GENERATORS := avio-server avio-server-h cgi-fw cgi-fw-h js jsio-client jsio-client-h jsio-server jsio-server-h json-schema rest-host-cpp rest-host-h rest-host-ih serial-fw serial-host usb-fw usb-host uxcgi-server uxcgi-server-h
+API_GENERATORS := avio-server avio-server-h cgi-fw cgi-fw-h js jsio-client jsio-client-h jsio-server-h jsio-server json-schema rest-host-cpp rest-host-h rest-host-ih serial-fw serial-host usb-fw usb-host uxcgi-server-h uxcgi-server
 
 API_SUFFIX-avio-server := _avio-server.cpp
 API_SUFFIX-avio-server-h := _avio-server.h
@@ -57,60 +57,68 @@ $(foreach g,${API_GENERATORS},\
 
 $(info API_SRCS:: ${API_SRCS})
 
-${API_DIR}/%_avio-server.cpp : %.api
-	 ${APIGEN} -d ${API_DIR} -i avio-server $<
+APIGEN_OPTS= -d ${API_DIR}
+
+$(if ${API-include-path}, $(eval APIGEN_OPTS+=-A ${API-include-path}))
+
+$(info APIGEN_OPTS: ${APIGEN_OPTS})
+
+BUILD_DEPENDS+=${API_SRCS}
+
+${API_DIR}/%_avio-server.cpp : %.api %_avio-server.h
+	 ${APIGEN} ${APIGEN_OPTS} -i avio-server $<
 
 ${API_DIR}/%_avio-server.h : %.api
-	 ${APIGEN} -d ${API_DIR} -i avio-server-h $<
+	 ${APIGEN} ${APIGEN_OPTS} -i avio-server-h $<
 
 ${API_DIR}/%_fcgi.cpp : %.api
-	 ${APIGEN} -d ${API_DIR} -i cgi-fw $<
+	 ${APIGEN} ${APIGEN_OPTS} -i cgi-fw $<
 
 ${API_DIR}/%_fcgi.h : %.api
-	 ${APIGEN} -d ${API_DIR} -i cgi-fw-h $<
+	 ${APIGEN} ${APIGEN_OPTS} -i cgi-fw-h $<
 
 ${API_DIR}/%_api.js : %.api
-	 ${APIGEN} -d ${API_DIR} -i js $<
+	 ${APIGEN} ${APIGEN_OPTS} -i js $<
 
-${API_DIR}/%_jsio-client.cpp : %.api
-	 ${APIGEN} -d ${API_DIR} -i jsio-client $<
+${API_DIR}/%_jsio-client.cpp : %.api %_jsio-client.h
+	 ${APIGEN} ${APIGEN_OPTS} -i jsio-client $<
 
 ${API_DIR}/%_jsio-client.h : %.api
-	 ${APIGEN} -d ${API_DIR} -i jsio-client-h $<
-
-${API_DIR}/%_jsio-server.cpp : %.api
-	 ${APIGEN} -d ${API_DIR} -i jsio-server $<
+	 ${APIGEN} ${APIGEN_OPTS} -i jsio-client-h $<
 
 ${API_DIR}/%_jsio-server.h : %.api
-	 ${APIGEN} -d ${API_DIR} -i jsio-server-h $<
+	 ${APIGEN} ${APIGEN_OPTS} -i jsio-server-h $<
+
+${API_DIR}/%_jsio-server.cpp : %.api %_jsio-server.h
+	 ${APIGEN} ${APIGEN_OPTS} -i jsio-server $<
 
 ${API_DIR}/%.schema.json : %.api
-	 ${APIGEN} -d ${API_DIR} -i json-schema $<
+	 ${APIGEN} ${APIGEN_OPTS} -i json-schema $<
 
 ${API_DIR}/%_rest.cpp : %.api
-	 ${APIGEN} -d ${API_DIR} -i rest-host-cpp $<
+	 ${APIGEN} ${APIGEN_OPTS} -i rest-host-cpp $<
 
 ${API_DIR}/%_rest.h : %.api
-	 ${APIGEN} -d ${API_DIR} -i rest-host-h $<
+	 ${APIGEN} ${APIGEN_OPTS} -i rest-host-h $<
 
 ${API_DIR}/%_rest.h : %.api
-	 ${APIGEN} -d ${API_DIR} -i rest-host-ih $<
+	 ${APIGEN} ${APIGEN_OPTS} -i rest-host-ih $<
 
 ${API_DIR}/%_serial-fw.cpp : %.api
-	 ${APIGEN} -d ${API_DIR} -i serial-fw $<
+	 ${APIGEN} ${APIGEN_OPTS} -i serial-fw $<
 
 ${API_DIR}/%_serial-host.cpp : %.api
-	 ${APIGEN} -d ${API_DIR} -i serial-host $<
+	 ${APIGEN} ${APIGEN_OPTS} -i serial-host $<
 
 ${API_DIR}/%_usb-fw.cpp : %.api
-	 ${APIGEN} -d ${API_DIR} -i usb-fw $<
+	 ${APIGEN} ${APIGEN_OPTS} -i usb-fw $<
 
 ${API_DIR}/%_usb-host.cpp : %.api
-	 ${APIGEN} -d ${API_DIR} -i usb-host $<
+	 ${APIGEN} ${APIGEN_OPTS} -i usb-host $<
 
 ${API_DIR}/%_uxcgi.cpp : %.api
-	 ${APIGEN} -d ${API_DIR} -i uxcgi-server $<
+	 ${APIGEN} ${APIGEN_OPTS} -i uxcgi-server $<
 
 ${API_DIR}/%_uxcgi.h : %.api
-	 ${APIGEN} -d ${API_DIR} -i uxcgi-server-h $<
+	 ${APIGEN} ${APIGEN_OPTS} -i uxcgi-server-h $<
 
